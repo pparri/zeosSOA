@@ -94,8 +94,8 @@ void kbd_routine()
         int key_code = tecla & 0x7f;  // 0111 1111
         int b = tecla >> 7;
         if (!b) {
-          if (char_map[key_code] == 'a') task_switch((union task_union *)idle_task);
-          if (char_map[key_code] == 'b') task_switch((union task_union *)task_1);
+          //if (char_map[key_code] == 'a') task_switch((union task_union *)idle_task);
+          //if (char_map[key_code] == 'b') task_switch((union task_union *)task_1);
 
           if(char_map[key_code] == '\0') printc_xy(0,0,'C');
           else printc_xy(0,0,char_map[key_code]); //printc es para hacerlo a nivel de sistema
