@@ -1,1 +1,1 @@
-zeOS de Axel y Aleix !!
+zeOS de Parri y Axel
