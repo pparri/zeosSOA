@@ -107,6 +107,20 @@ nok:
  popl %ebp
  ret
 
+
+.globl getKey; .type getKey, @function; .align 0; getKey:
+ pushl %ebp
+ movl %esp, %ebp
+ pushl %ebx;
+ movl $21, %eax
+ movl 0x8(%ebp), %ebx;
+ call syscall_sysenter
+ popl %ebx
+ test %eax, %eax
+ js nok
+ popl %ebp
+ ret
+
 .globl SAVE_REGS; .type SAVE_REGS, @function; .align 0; SAVE_REGS:
       pushl %eax
       movl %eax, REGS

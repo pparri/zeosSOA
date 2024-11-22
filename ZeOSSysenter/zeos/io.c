@@ -13,6 +13,8 @@
 #define NUM_COLUMNS 80
 #define NUM_ROWS    25
 
+struct c_Buffer cBuffer = {{0},0,0};
+
 Byte x, y=19;
 
 /* Read a byte from 'port' */

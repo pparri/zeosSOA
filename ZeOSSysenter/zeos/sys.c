@@ -49,6 +49,19 @@ int sys_getpid()
 	return current()->PID;
 }
 
+int sys_getKey(char *b)
+{
+  if (cBuffer.Bwritten == 0) return -1;
+  int rbytes;
+  for (rbytes = 0; rbytes < CBUFFER_SIZE && rbytes < cBuffer.Bwritten; rbytes++)
+  {
+      b[rbytes] = cBuffer.buffer[cBuffer.rpointer];
+      cBuffer.rpointer = (cBuffer.rpointer+1)%CBUFFER_SIZE;
+  }
+  cBuffer.Bwritten -= rbytes;
+  return rbytes;
+}
+
 int global_PID=1000;
 
 int ret_from_fork()
