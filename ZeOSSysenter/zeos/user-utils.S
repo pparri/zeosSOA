@@ -114,6 +114,20 @@ ENTRY(getKey)
 	popl %ebp
 	ret
 
+/* char* sbrk(int size) */
+ENTRY(sbrk)
+	pushl %ebp
+	movl %esp, %ebp
+	pushl %ebx;  // Save EBX, ESI and EDI if modified
+	movl $22, %eax
+	movl 0x8(%ebp), %ebx;	//size
+	call syscall_sysenter
+	popl %ebx
+	test %eax, %eax
+	js nok	// if (eax < 0) -->
+	popl %ebp
+	ret
+	
 ENTRY(SAVE_REGS)
       pushl %eax
       movl %eax, REGS    //SAVE EAX

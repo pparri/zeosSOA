@@ -12,6 +12,10 @@ int __attribute__ ((__section__(".text.main")))
 
 
   char b[256];
+  void *region1 = sbrk(100);  // Reserve 100 bytes
+  void *region2 = sbrk(200);  // Reserve 200 bytes after region1
+  void *region3 = sbrk(-100); // Free 100 bytes from region2
+
   while(1) { 
     /*
     if (getKey(b) == 1);

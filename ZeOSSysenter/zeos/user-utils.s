@@ -1,8 +1,9 @@
-# 0 "user-utils.S"
-# 0 "<built-in>"
-# 0 "<command-line>"
+# 1 "user-utils.S"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 31 "<command-line>"
 # 1 "/usr/include/stdc-predef.h" 1 3 4
-# 0 "<command-line>" 2
+# 32 "<command-line>" 2
 # 1 "user-utils.S"
 # 1 "include/asm.h" 1
 # 2 "user-utils.S" 2
@@ -113,6 +114,20 @@ nok:
  movl %esp, %ebp
  pushl %ebx;
  movl $21, %eax
+ movl 0x8(%ebp), %ebx;
+ call syscall_sysenter
+ popl %ebx
+ test %eax, %eax
+ js nok
+ popl %ebp
+ ret
+
+
+.globl sbrk; .type sbrk, @function; .align 0; sbrk:
+ pushl %ebp
+ movl %esp, %ebp
+ pushl %ebx;
+ movl $22, %eax
  movl 0x8(%ebp), %ebx;
  call syscall_sysenter
  popl %ebx
