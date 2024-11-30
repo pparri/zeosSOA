@@ -21,9 +21,10 @@
 #define ESCRIPTURA 1
 
 #define HEAP_SIZE 1024 // 1MB heap
-
+/*
 int heap[HEAP_SIZE];
 void *heap_end;
+*/
 
 void * get_ebp();
 
@@ -81,7 +82,7 @@ char * sys_sbrk(int size)
     if (size == 0) return heap_pointer; 
 
     char *old_pointer = heap_pointer;
-    char *new_pointer = old_pointer + (size*PAGE_SIZE);
+    char *new_pointer = old_pointer + (size * PAGE_SIZE);
     page_table_entry * PT = get_PT(current());
 
     if (new_pointer < PAG_INIT_HEAP) return -ENOMEM;
@@ -115,7 +116,7 @@ char * sys_sbrk(int size)
             free_frame(get_frame(PT, (unsigned long)heap_pointer/PAGE_SIZE));
             del_ss_pag(PT, (unsigned long)heap_pointer/PAGE_SIZE);
         }
-        old_pointer = heap_pointer;
+        //old_pointer = new_pointer;
     }
     return old_pointer;
 }

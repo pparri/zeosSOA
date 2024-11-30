@@ -143,7 +143,7 @@ void init_mm()
   allocate_DIR(&task[0].task);
   set_cr3(get_DIR(&task[0].task));
   set_pe_flag();
-  heap_pointer = (char*)PAG_INIT_HEAP;
+  heap_pointer = (char*)DATA_END;
 }
 /***********************************************/
 /************** SEGMENTATION MANAGEMENT ********/

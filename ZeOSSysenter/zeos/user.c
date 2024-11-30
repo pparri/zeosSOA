@@ -33,10 +33,10 @@ int __attribute__ ((__section__(".text.main")))
      /* __asm__ __volatile__ ("mov %0, %%cr3"::"r" (0) ); */
 
   write(1, "\n", 1);
-  char *region1 = sbrk(200);
+  char *region1 = sbrk(100);
   put_hex((unsigned long)region1);
   write(1, "\n", 1);
-  char *region2 = sbrk(100); 
+  char *region2 = sbrk(10); 
   put_hex((unsigned long)region2);
   write(1, "\n", 1);
   char *region4 = sbrk(1);
