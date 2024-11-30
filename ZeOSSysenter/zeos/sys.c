@@ -81,18 +81,28 @@ definido en mm.c
 
 void init_heap() {
 
-int new_ph_pag, i;
+int new_ph_pag, i, pag;
   struct task_struct *c = current();
-  page_table_entry *process_PT = get_PT(&c);
-  int pag_log_heap = PAG_INIT_HEAP;
-  new_ph_pag=alloc_frame();
-  if (new_ph_pag!=-1) /* One page allocated */
-  {//reservar a partir de la ultima pagina del heap
-    set_ss_pag(process_PT, pag_log_heap , new_ph_pag);
-  }
-  else printk("No hay mas paginas disponibles\n");
+  page_table_entry *process_PT = get_PT(current());
 
-  
+for (pag=0; pag<NUM_PAG_HEAP; pag++)
+  {
+    new_ph_pag=alloc_frame();
+    if (new_ph_pag!=-1) /* One page allocated */
+    {
+      set_ss_pag(process_PT, PAG_INIT_HEAP+pag, new_ph_pag);
+    }
+    else /* No more free pages left. Deallocate everything */
+    {
+      /* Deallocate allocated pages. Up to pag. */
+      for (i=0; i<pag; i++)
+      {
+        free_frame(get_frame(process_PT, PAG_INIT_HEAP+i));
+        del_ss_pag(process_PT, PAG_INIT_HEAP+i);
+      }
+
+    }
+  }
 }
 
 
