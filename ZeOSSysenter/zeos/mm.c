@@ -28,6 +28,10 @@ page_table_entry pagusr_table[NR_TASKS][TOTAL_PAGES]
 /* TSS */
 TSS         tss; 
 
+/* HEAP */
+char * heap_pointer;
+
+
 
 
 /***********************************************/
@@ -139,6 +143,7 @@ void init_mm()
   allocate_DIR(&task[0].task);
   set_cr3(get_DIR(&task[0].task));
   set_pe_flag();
+  heap_pointer = (char*)PAG_INIT_HEAP;
 }
 /***********************************************/
 /************** SEGMENTATION MANAGEMENT ********/

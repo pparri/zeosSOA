@@ -11,6 +11,8 @@
 #define PAG_LOG_INIT_DATA (PAG_LOG_INIT_CODE+NUM_PAG_CODE)
 #define NUM_PAG_DATA 20
 #define PAGE_SIZE 0x1000
+#define NUM_PAG_HEAP 1
+
 
 /* Memory distribution */
 /***********************/
@@ -24,6 +26,9 @@
 #define USER_FIRST_PAGE	(L_USER_START>>12)
 
 #define PH_PAGE(x) (x>>12)
+#define DATA_START (L_USER_START+ (NUM_PAG_CODE*PAGE_SIZE))
+#define DATA_END (DATA_START+(NUM_PAG_DATA*PAGE_SIZE))
+#define PAG_INIT_HEAP (USER_FIRST_PAGE+PAG_LOG_INIT_DATA + NUM_PAG_DATA)
 
 #endif
 

@@ -20,6 +20,11 @@
 #define LECTURA 0
 #define ESCRIPTURA 1
 
+#define HEAP_SIZE 1024 // 1MB heap
+
+int heap[HEAP_SIZE];
+void *heap_end;
+
 void * get_ebp();
 
 int check_fd(int fd, int permissions)
@@ -53,16 +58,67 @@ int sys_getKey(char *b)
 {
   if (cBuffer.Bwritten == 0) return 0;
   else if (b == NULL) return -EINVAL;
-  else if (!access_ok(VERIFY_WRITE, b, cBuffer.Bwritten)) return -EFAULT;
-  int rbytes;
-  for (rbytes = 0; rbytes < CBUFFER_SIZE && rbytes < cBuffer.Bwritten; rbytes++)
-  {
-      b[rbytes] = cBuffer.buffer[cBuffer.rpointer];
-      cBuffer.rpointer = (cBuffer.rpointer+1)%CBUFFER_SIZE;
-  }
-  cBuffer.Bwritten -= rbytes;
-  return rbytes;
+  else if (!access_ok(VERIFY_WRITE, b, sizeof(char))) return -EFAULT;
+  *b = cBuffer.buffer[cBuffer.rpointer];
+  cBuffer.rpointer = (cBuffer.rpointer+1)%CBUFFER_SIZE;
+  --cBuffer.Bwritten;
+  return 1;
 }
+//inicializamos el heap después de la data
+/*
+----------
+USER CODE
+---------- data_start
+USER DATA+STACK
+---------- data_end
+USER HEAP
+----------
+definido en mm.c
+*/
+
+char * sys_sbrk(int size) 
+{
+    if (size == 0) return heap_pointer; 
+
+    char *old_pointer = heap_pointer;
+    char *new_pointer = old_pointer + size;
+    page_table_entry * PT = get_PT(current());
+
+    if (new_pointer < PAG_INIT_HEAP) return -ENOMEM;
+
+    // ++
+    if (size > 0) 
+    {
+        while ((unsigned long)heap_pointer < (unsigned long)new_pointer) 
+        {
+            int new_ph_pg = alloc_frame();
+            if (new_ph_pg == -1) 
+            {
+                while ((unsigned long)heap_pointer > (unsigned long)old_pointer) 
+                {
+                    heap_pointer -= PAGE_SIZE;
+                    free_frame(get_frame(PT, (unsigned long)heap_pointer/PAGE_SIZE));
+                    del_ss_pag(PT, (unsigned long)heap_pointer/PAGE_SIZE);
+                }
+                return -ENOMEM;
+            }
+            set_ss_pag(PT, (unsigned long)heap_pointer/PAGE_SIZE, new_ph_pg);
+            heap_pointer += PAGE_SIZE;
+        }
+    }
+    // --
+    else 
+    {
+        while ((unsigned long)heap_pointer > (unsigned long)new_pointer) 
+        {
+            heap_pointer -= PAGE_SIZE;
+            free_frame(get_frame(PT, (unsigned long)heap_pointer/PAGE_SIZE));
+            del_ss_pag(PT, (unsigned long)heap_pointer/PAGE_SIZE);
+        }
+    }
+    return old_pointer;
+}
+
 
 int global_PID=1000;
 

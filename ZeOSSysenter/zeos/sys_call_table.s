@@ -32,7 +32,7 @@
  .long sys_ni_syscall
  .long sys_getpid
  .long sys_getKey
- .long sys_ni_syscall
+ .long sys_sbrk
  .long sys_ni_syscall
  .long sys_ni_syscall
  .long sys_ni_syscall
