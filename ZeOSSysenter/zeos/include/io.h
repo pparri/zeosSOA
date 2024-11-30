@@ -16,6 +16,7 @@ Byte inb (unsigned short port);
 void printc(char c);
 void printc_xy(Byte x, Byte y, char c);
 void printk(char *string);
+int cursor_move(int posX, int posY);
 
 struct c_Buffer
 {
@@ -26,5 +27,12 @@ struct c_Buffer
 };
 
 extern struct c_Buffer cBuffer;
+
+typedef struct 
+{
+  int x; //number of rows
+  int y; //number of columns
+  char* content; //pointer to sprite content matrix(X,Y)
+} Sprite;
 
 #endif  /* __IO_H__ */

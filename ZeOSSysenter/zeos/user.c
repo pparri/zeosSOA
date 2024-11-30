@@ -46,6 +46,8 @@ int __attribute__ ((__section__(".text.main")))
   put_hex((unsigned long)region3);
   write(1, "\n", 1);
 
+  SetColor(1,5);
+
   char *b;
   while(1) { 
     /*

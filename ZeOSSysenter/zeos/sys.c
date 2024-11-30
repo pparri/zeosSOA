@@ -85,7 +85,7 @@ char * sys_sbrk(int size)
     char *new_pointer = old_pointer + (size * PAGE_SIZE);
     page_table_entry * PT = get_PT(current());
 
-    if (new_pointer < PAG_INIT_HEAP) return -ENOMEM;
+    if ((unsigned long)new_pointer < PAG_INIT_HEAP) return -ENOMEM;
 
     // ++
     if (size > 0) 
@@ -121,6 +121,20 @@ char * sys_sbrk(int size)
     return old_pointer;
 }
 
+int sys_gotoXY(int posX, int posY)
+{
+  return cursor_move(posX,posY);
+}
+
+int sys_SetColor(int color, int background)
+{
+  return asthetic_change(color,background);
+}
+
+int sys_spritePut(int posX, int posY, Sprite* sp)
+{
+  return spriteDraw(posX,posY,sp);
+}
 
 int global_PID=1000;
 

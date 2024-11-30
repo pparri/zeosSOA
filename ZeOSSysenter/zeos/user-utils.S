@@ -128,6 +128,52 @@ ENTRY(sbrk)
 	popl %ebp
 	ret
 
+/* int gotoXY(int posX, posY) */
+ENTRY(gotoXY)
+	pushl %ebp
+	movl %esp, %ebp
+	pushl %ebx;  // Save EBX, ESI and EDI if modified
+	movl $23, %eax
+	movl 0x8(%ebp), %ebx;	//posX
+	movl 0xC(%ebp), %ecx;	//posY
+	call syscall_sysenter
+	popl %ebx
+	test %eax, %eax
+	js nok	// if (eax < 0) -->
+	popl %ebp
+	ret
+
+/* int SetColor(int color, int background) */
+ENTRY(SetColor)
+	pushl %ebp
+	movl %esp, %ebp
+	pushl %ebx;  // Save EBX, ESI and EDI if modified
+	movl $24, %eax
+	movl 0x8(%ebp), %ebx;	//color
+	movl 0xC(%ebp), %ecx;	//background
+	call syscall_sysenter
+	popl %ebx
+	test %eax, %eax
+	js nok	// if (eax < 0) -->
+	popl %ebp
+	ret
+
+/* int spritePut(int posX, int posY, Sprite* sp) */
+ENTRY(spritePut)
+	pushl %ebp
+	movl %esp, %ebp
+	pushl %ebx;  // Save EBX, ESI and EDI if modified
+	movl $25, %eax
+	movl 0x8(%ebp), %ebx;	//posX
+	movl 0xC(%ebp), %ecx;	//posY
+	movl 0x10(%ebp), %edx;	//sp
+	call syscall_sysenter
+	popl %ebx
+	test %eax, %eax
+	js nok	// if (eax < 0) -> 
+	popl %ebp
+	ret
+
 ENTRY(SAVE_REGS)
       pushl %eax
       movl %eax, REGS    //SAVE EAX
