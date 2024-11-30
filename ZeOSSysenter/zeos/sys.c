@@ -51,8 +51,9 @@ int sys_getpid()
 
 int sys_getKey(char *b)
 {
-  if (cBuffer.Bwritten == 0) return -1;
-  else if (b == NULL) return -1;
+  if (cBuffer.Bwritten == 0) return 0;
+  else if (b == NULL) return -EINVAL;
+  else if (!access_ok(VERIFY_WRITE, b, cBuffer.Bwritten)) return -EFAULT;
   int rbytes;
   for (rbytes = 0; rbytes < CBUFFER_SIZE && rbytes < cBuffer.Bwritten; rbytes++)
   {
