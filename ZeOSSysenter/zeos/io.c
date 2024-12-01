@@ -93,14 +93,13 @@ int asthetic_change(int color, int background)
 int spriteDraw(int posX, int posY, Sprite *sp)
 {
   //falta chekear
-  /*
-  for (int i = posX; i < sp.x; ++i)
+  
+  for (int i = 0; i < sp->x; ++i)
   {
-    for (int j = posY; j < sp.y; ++j)
+    for (int j = 0; j < sp->y; ++j)
     {
-      printc_xy(sp.content[i][j]);
-      --pposy;
+      printc_xy(posX+i,posY+j,*(sp->content + i * sp->y + j));
     }
   }
-  */
+  
 }
