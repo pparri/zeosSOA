@@ -1,13 +1,16 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <sched.h>
+
+
 void copy_data(void *start, void *dest, int size);
 int copy_from_user(void *start, void *dest, int size);
 int copy_to_user(void *start, void *dest, int size);
 
 #define VERIFY_READ	0
 #define VERIFY_WRITE	1
-int access_ok(int type, const void *addr, unsigned long size);
+int access_ok(int type, const void *addr, unsigned long size, struct task_struct *task);
 
 #define min(a,b)	(a<b?a:b)
 

@@ -175,6 +175,8 @@ void init_idle (void)
   uc->stack[KERNEL_STACK_SIZE-1]=(unsigned long)&cpu_idle; /* Return address */
   uc->stack[KERNEL_STACK_SIZE-2]=0; /* register ebp */
 
+  
+
   c->register_esp=(int)&(uc->stack[KERNEL_STACK_SIZE-2]); /* top of the stack */
 
   idle_task=c;
@@ -194,6 +196,9 @@ void init_task1(void)
   c->total_quantum=DEFAULT_QUANTUM;
 
   c->state=ST_RUN;
+  c->heap_end_proc = TOTAL_PAGES << 12;
+  c->heap_start_proc = DATA_END;
+  c->heap_pointer_proc = c->heap_start_proc;
 
   remaining_quantum=c->total_quantum;
 
