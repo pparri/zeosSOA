@@ -74,8 +74,8 @@ void printk(char *string)
 int cursor_move(int posX, int posY)
 {
   if ((posX >= NUM_ROWS || posX < 0) || (posY >= NUM_COLUMNS || posY < 0)) return -EINVAL;
-  x = posX;
-  y = posY;
+  x = posY;
+  y = posX;
   return 0;
 }
 

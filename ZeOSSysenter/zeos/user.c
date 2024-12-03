@@ -122,11 +122,12 @@ Sprite smileySprite = {
 spritePut(0, 0, &smileySprite);
 
   char *b;
-  int x = 11;
-  int y = 4;
+  int x = 4;
+  int y = 11;
   while(1)
   {
-    gotoXY((++x)%25,(++y)%80);
+    gotoXY(x,y);
+    //gotoXY((++x)%25,(++y)%80);
     int rbytes = getKey(&b);
     if (rbytes > 0) write(1,&b,rbytes);
   }
