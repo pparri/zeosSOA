@@ -77,11 +77,10 @@ char * sys_sbrk(int size)
 
     char *old_pointer = current()->heap_pointer_proc;
     char *new_pointer = old_pointer + (size);
-
+    union task_union* tu = (union task_union *) current();
     page_table_entry * PT = get_PT(current());
 
     if ((unsigned long)new_pointer < DATA_END) return (char)NULL;
-   
     // ++
     if (size > 0) 
     {
@@ -213,14 +212,15 @@ int sys_fork(void)
     copy_data((void*)(pag<<12), (void*)((pag+NUM_PAG_DATA)<<12), PAGE_SIZE);
     del_ss_pag(parent_PT, pag+NUM_PAG_DATA);
   }
+  /*
   //Copiar datos del heap: Copia directa datos??
-  //Si no es necesario con el copy_data ya se heredan los punteros del heap
   char *pointer_current_start = current()->heap_start_proc;
   while (pointer_current_start < current()->heap_end_proc) {
     unsigned int ph_page = get_frame(parent_PT,(int)pointer_current_start/PAGE_SIZE);
     set_ss_pag(process_PT,(unsigned int)pointer_current_start/PAGE_SIZE, ph_page);
     pointer_current_start += PAGE_SIZE;
   }
+  */
  
   //Si fuese con el COW, como deberiamos de marcar las paginas con permiso de solo lectura en la TP del padre y del hijo?
 
