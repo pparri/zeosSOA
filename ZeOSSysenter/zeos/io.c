@@ -92,13 +92,15 @@ int asthetic_change(int color, int background)
 /* SPRITE */
 int spriteDraw(int posX, int posY, Sprite *sp)
 {
-  //falta chekear
-  
-  for (int i = 0; i < sp->x; ++i)
-  {
-    for (int j = 0; j < sp->y; ++j)
-    {
-      printc_xy(posX+i,posY+j,*(sp->content + i * sp->y + j));
+    if ((posX >= NUM_ROWS || posX < 0) || (posY >= NUM_COLUMNS || posY < 0)) return -EINVAL; 
+    else if (sp == NULL || sp->content == NULL) return -EINVAL; 
+    for (int row = 0; row < sp->x; ++row) {
+        for (int col = 0; col < sp->y; ++col) 
+        {
+          int xPos = posX + col;
+          int yPos = posY + row;
+          printc_xy(xPos, yPos, sp->content[row * sp->y + col]);
+        }
     }
-  }
+    return 0;  // Éxito
 }
