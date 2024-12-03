@@ -116,7 +116,7 @@ char spriteContent[] = {
 Sprite smileySprite = {
     .x = 25,       
     .y = 80,
-    .content = spriteContent  // Contenido del sprite
+    .content = spriteContent
 };
 
 spritePut(0, 0, &smileySprite);

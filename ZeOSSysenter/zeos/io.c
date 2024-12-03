@@ -102,5 +102,5 @@ int spriteDraw(int posX, int posY, Sprite *sp)
           printc_xy(xPos, yPos, sp->content[row * sp->y + col]);
         }
     }
-    return 0;  // Éxito
+    return 0;
 }
