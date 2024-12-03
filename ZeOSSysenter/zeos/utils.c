@@ -1,6 +1,5 @@
 #include <utils.h>
 #include <types.h>
-
 #include <mm_address.h>
 
 void copy_data(void *start, void *dest, int size)
@@ -62,7 +61,7 @@ int copy_to_user(void *start, void *dest, int size)
  * Returns true (nonzero) if the memory block may be valid,
  *         false (zero) if it is definitely invalid
  */
-int access_ok(int type, const void * addr, unsigned long size)
+int access_ok(int type, const void * addr, unsigned long size, struct task_struct *task)
 {
   unsigned long addr_ini, addr_fin;
 
@@ -82,6 +81,15 @@ int access_ok(int type, const void * addr, unsigned long size)
   	(addr_fin<=(USER_FIRST_PAGE+NUM_PAG_CODE+NUM_PAG_DATA)))
           return 1;
   }
+  if (task) {
+      unsigned long heap_start_page = ((unsigned long)(task->heap_start_proc) >> 12);
+      unsigned long heap_end_page = ((unsigned long)(task->heap_end_proc) >> 12);
+
+      if ((addr_ini >= heap_start_page) && (addr_fin <= heap_end_page)) {
+          return 1; // Las direcciones son validas dentro del heap
+      }
+  }
+
   return 0;
 }
 

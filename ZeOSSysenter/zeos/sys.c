@@ -20,15 +20,6 @@
 #define LECTURA 0
 #define ESCRIPTURA 1
 
-#define HEAP_SIZE 1024 
-/*
-#define ALIGN_DOWN(x, a) ((x) & ~((a) - 1))
-#define ALIGN_UP(addr, size) (((addr) + (size) - 1) & ~((size) - 1))
-*/
-
-
-
-
 void * get_ebp();
 
 int check_fd(int fd, int permissions)
@@ -62,7 +53,7 @@ int sys_getKey(char *b)
 {
   if (cBuffer.Bwritten == 0) return 0;
   else if (b == NULL) return -EINVAL;
-  else if (!access_ok(VERIFY_WRITE, b, sizeof(char))) return -EFAULT;
+  else if (!access_ok(VERIFY_WRITE, b, sizeof(char), NULL)) return -EFAULT;
   *b = cBuffer.buffer[cBuffer.rpointer];
   cBuffer.rpointer = (cBuffer.rpointer+1)%CBUFFER_SIZE;
   --cBuffer.Bwritten;
@@ -82,48 +73,53 @@ definido en mm.c
 
 char * sys_sbrk(int size) 
 {
-    if (size == 0) return heap_pointer; 
+    if (size == 0) return current()->heap_pointer_proc;
 
-    char *old_pointer = heap_pointer;
+    char *old_pointer = current()->heap_pointer_proc;
     char *new_pointer = old_pointer + (size);
-
+    union task_union* tu = (union task_union *) current();
     page_table_entry * PT = get_PT(current());
 
     if ((unsigned long)new_pointer < DATA_END) return (char)NULL;
-    //if ((unsigned long)new_pointer > DATA_END + HEAP_SIZE) return (char)NULL; //Si queremos que haya un límite superior
     // ++
     if (size > 0) 
     {
-        while ((unsigned long)heap_pointer < (unsigned long)new_pointer) 
-        {
-          if ((unsigned long)heap_pointer % PAGE_SIZE == 0) { //si sobrepasamos límite de pagina reservamos una nueva
-            int new_ph_pg = alloc_frame();
-            if (new_ph_pg == -1) 
-            {
-                while ((unsigned long)heap_pointer > (unsigned long)old_pointer) 
-                {
-                    heap_pointer -= PAGE_SIZE;
-                    free_frame(get_frame(PT, (unsigned long)heap_pointer/PAGE_SIZE));
-                    del_ss_pag(PT, (unsigned long)heap_pointer/PAGE_SIZE);
-                }
-                return -ENOMEM;
-            }
-            set_ss_pag(PT, (unsigned long)heap_pointer/PAGE_SIZE, new_ph_pg);
+      int p_log_nec = (size + PAGE_SIZE -1) / PAGE_SIZE;
+      int paginas_reservadas = (current()->heap_pointer_proc - current()->heap_start_proc) / PAGE_SIZE;
+      if (NUM_PAG_CODE + NUM_PAG_DATA + NUM_PAG_KERNEL + p_log_nec + paginas_reservadas > TOTAL_PAGES) return (char) NULL; //quedan páginas logicas?
+      while ((unsigned long)current()->heap_pointer_proc < (unsigned long)new_pointer) 
+      {
+        if ((unsigned long)current()->heap_pointer_proc % PAGE_SIZE == 0) { //si sobrepasamos límite de pagina reservamos una nueva
+          int new_ph_pg = alloc_frame();
+          if (new_ph_pg == -1) 
+          {
+              while ((unsigned long)current()->heap_pointer_proc > (unsigned long)old_pointer) 
+              {
+                  current()->heap_pointer_proc -= PAGE_SIZE;
+                  free_frame(get_frame(PT, (unsigned long)current()->heap_pointer_proc/PAGE_SIZE));
+                  del_ss_pag(PT, (unsigned long)current()->heap_pointer_proc/PAGE_SIZE);
+              }
+              return (char)NULL;
           }
-            heap_pointer += PAGE_SIZE; 
+          set_ss_pag(PT, (unsigned long)current()->heap_pointer_proc/PAGE_SIZE, new_ph_pg);
         }
+        current()->heap_pointer_proc += PAGE_SIZE; 
+        
+      }
     }
     // --
     else 
     {
-        while ((unsigned long)heap_pointer > (unsigned long)new_pointer) 
+        while ((unsigned long)current()->heap_pointer_proc > (unsigned long)new_pointer) 
         {
-            if ((unsigned long)heap_pointer % PAGE_SIZE == 0) { // Solo desalojar al inicio de una página
-              del_ss_pag(PT, (unsigned long)heap_pointer/PAGE_SIZE);
-              free_frame(get_frame(PT, (unsigned long)heap_pointer/PAGE_SIZE));
-
+            if ((unsigned long)current()->heap_pointer_proc % PAGE_SIZE == 0) {
+               // Solo desalojar al inicio de una página
+              if ((unsigned int)current()->heap_pointer_proc > DATA_END) {  // desalojar hasta el final de los datos
+                del_ss_pag(PT, (unsigned long)current()->heap_pointer_proc/PAGE_SIZE);
+                free_frame(get_frame(PT, (unsigned long)current()->heap_pointer_proc/PAGE_SIZE));
+              }
             }
-            heap_pointer -= PAGE_SIZE; 
+            current()->heap_pointer_proc -= PAGE_SIZE; 
         }
 
     }
@@ -216,6 +212,18 @@ int sys_fork(void)
     copy_data((void*)(pag<<12), (void*)((pag+NUM_PAG_DATA)<<12), PAGE_SIZE);
     del_ss_pag(parent_PT, pag+NUM_PAG_DATA);
   }
+  /*
+  //Copiar datos del heap: Copia directa datos??
+  char *pointer_current_start = current()->heap_start_proc;
+  while (pointer_current_start < current()->heap_end_proc) {
+    unsigned int ph_page = get_frame(parent_PT,(int)pointer_current_start/PAGE_SIZE);
+    set_ss_pag(process_PT,(unsigned int)pointer_current_start/PAGE_SIZE, ph_page);
+    pointer_current_start += PAGE_SIZE;
+  }
+  */
+ 
+  //Si fuese con el COW, como deberiamos de marcar las paginas con permiso de solo lectura en la TP del padre y del hijo?
+
   /* Deny access to the child's memory space */
   set_cr3(get_DIR(current()));
 
@@ -257,7 +265,7 @@ int ret;
 		return ret;
 	if (nbytes < 0)
 		return -EINVAL;
-	if (!access_ok(VERIFY_READ, buffer, nbytes))
+	if (!access_ok(VERIFY_READ, buffer, nbytes, NULL))
 		return -EFAULT;
 	
 	bytes_left = nbytes;
@@ -295,6 +303,12 @@ void sys_exit()
     free_frame(get_frame(process_PT, PAG_LOG_INIT_DATA+i));
     del_ss_pag(process_PT, PAG_LOG_INIT_DATA+i);
   }
+  //desalojamos el heap 
+  while(current()->heap_pointer_proc < current()->heap_start_proc) {
+      free_frame(get_frame(process_PT, (unsigned int)current()->heap_pointer_proc/PAGE_SIZE)); 
+      del_ss_pag(process_PT, (unsigned int)current()->heap_pointer_proc/PAGE_SIZE);
+      current()->heap_pointer_proc -= PAGE_SIZE;
+  }
   
   /* Free task_struct */
   list_add_tail(&(current()->list), &freequeue);
@@ -318,7 +332,7 @@ int sys_get_stats(int pid, struct stats *st)
 {
   int i;
   
-  if (!access_ok(VERIFY_WRITE, st, sizeof(struct stats))) return -EFAULT; 
+  if (!access_ok(VERIFY_WRITE, st, sizeof(struct stats), NULL)) return -EFAULT; 
   
   if (pid<0) return -EINVAL;
   for (i=0; i<NR_TASKS; i++)
