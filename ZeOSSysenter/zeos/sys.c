@@ -20,11 +20,14 @@
 #define LECTURA 0
 #define ESCRIPTURA 1
 
-#define HEAP_SIZE 1024 // 1MB heap
+#define HEAP_SIZE 1024 
 /*
-int heap[HEAP_SIZE];
-void *heap_end;
+#define ALIGN_DOWN(x, a) ((x) & ~((a) - 1))
+#define ALIGN_UP(addr, size) (((addr) + (size) - 1) & ~((size) - 1))
 */
+
+
+
 
 void * get_ebp();
 
@@ -82,16 +85,18 @@ char * sys_sbrk(int size)
     if (size == 0) return heap_pointer; 
 
     char *old_pointer = heap_pointer;
-    char *new_pointer = old_pointer + (size * PAGE_SIZE);
+    char *new_pointer = old_pointer + (size);
+
     page_table_entry * PT = get_PT(current());
 
-    if ((unsigned long)new_pointer < PAG_INIT_HEAP) return -ENOMEM;
-
+    if ((unsigned long)new_pointer < DATA_END) return (char)NULL;
+    //if ((unsigned long)new_pointer > DATA_END + HEAP_SIZE) return (char)NULL; //Si queremos que haya un límite superior
     // ++
     if (size > 0) 
     {
         while ((unsigned long)heap_pointer < (unsigned long)new_pointer) 
         {
+          if ((unsigned long)heap_pointer % PAGE_SIZE == 0) { //si sobrepasamos límite de pagina reservamos una nueva
             int new_ph_pg = alloc_frame();
             if (new_ph_pg == -1) 
             {
@@ -104,7 +109,8 @@ char * sys_sbrk(int size)
                 return -ENOMEM;
             }
             set_ss_pag(PT, (unsigned long)heap_pointer/PAGE_SIZE, new_ph_pg);
-            heap_pointer += PAGE_SIZE;
+          }
+            heap_pointer += PAGE_SIZE; 
         }
     }
     // --
@@ -112,11 +118,14 @@ char * sys_sbrk(int size)
     {
         while ((unsigned long)heap_pointer > (unsigned long)new_pointer) 
         {
-            heap_pointer -= PAGE_SIZE;
-            free_frame(get_frame(PT, (unsigned long)heap_pointer/PAGE_SIZE));
-            del_ss_pag(PT, (unsigned long)heap_pointer/PAGE_SIZE);
+            if ((unsigned long)heap_pointer % PAGE_SIZE == 0) { // Solo desalojar al inicio de una página
+              del_ss_pag(PT, (unsigned long)heap_pointer/PAGE_SIZE);
+              free_frame(get_frame(PT, (unsigned long)heap_pointer/PAGE_SIZE));
+
+            }
+            heap_pointer -= PAGE_SIZE; 
         }
-        //old_pointer = new_pointer;
+
     }
     return old_pointer;
 }

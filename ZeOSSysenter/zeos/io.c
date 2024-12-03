@@ -73,9 +73,9 @@ void printk(char *string)
 /* CURSOR */
 int cursor_move(int posX, int posY)
 {
-  if ((posX > NUM_ROWS || posX < 0) || (posY > NUM_COLUMNS || posY < 0)) return -EINVAL;
+  if ((posX >= NUM_ROWS || posX < 0) || (posY >= NUM_COLUMNS || posY < 0)) return -EINVAL;
   x = posX;
-  y= posY;
+  y = posY;
   return 0;
 }
 
@@ -101,5 +101,4 @@ int spriteDraw(int posX, int posY, Sprite *sp)
       printc_xy(posX+i,posY+j,*(sp->content + i * sp->y + j));
     }
   }
-  
 }
