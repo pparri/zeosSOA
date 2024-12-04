@@ -197,7 +197,7 @@ void init_task1(void)
 
   c->state=ST_RUN;
   c->heap_end_proc = TOTAL_PAGES << 12;
-  c->heap_start_proc = DATA_END;
+  c->heap_start_proc = INIT_HEAP; //dejamos las 20 paginas de reserva para la copia de datos y copia del heap
   c->heap_pointer_proc = c->heap_start_proc;
 
   remaining_quantum=c->total_quantum;

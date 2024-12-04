@@ -50,11 +50,12 @@ int __attribute__ ((__section__(".text.main")))
   put_hex((unsigned long)region5);
   write(1, "\n", 1);
 
-
-
- 
+  int f = fork();
 
   char *b;
+  if (f == 0) write (1,"Soy el hijo\n",12);
+  else write(1,"Soy el padre\n",13);
+  
   while(1) { 
     /*
     if (getKey(b) == 1);

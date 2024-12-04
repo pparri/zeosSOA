@@ -80,13 +80,13 @@ char * sys_sbrk(int size)
     union task_union* tu = (union task_union *) current();
     page_table_entry * PT = get_PT(current());
 
-    if ((unsigned long)new_pointer < DATA_END) return (char)NULL;
+    if ((unsigned long)new_pointer < INIT_HEAP) return (char)NULL; //tiene que ser mayor a la direccion que usamos para la copia de datos y heap
     // ++
     if (size > 0) 
     {
-      int p_log_nec = (size + PAGE_SIZE -1) / PAGE_SIZE;
+      int p_log_nec = (size + PAGE_SIZE -1) / PAGE_SIZE; //redondear para arriba las paginas necesarias
       int paginas_reservadas = (current()->heap_pointer_proc - current()->heap_start_proc) / PAGE_SIZE;
-      if (NUM_PAG_CODE + NUM_PAG_DATA + NUM_PAG_KERNEL + p_log_nec + paginas_reservadas > TOTAL_PAGES) return (char) NULL; //quedan páginas logicas?
+      if (NUM_PAG_CODE + 2* NUM_PAG_DATA + NUM_PAG_KERNEL + p_log_nec + paginas_reservadas > TOTAL_PAGES) return (char) NULL; //quedan páginas logicas?
       while ((unsigned long)current()->heap_pointer_proc < (unsigned long)new_pointer) 
       {
         if ((unsigned long)current()->heap_pointer_proc % PAGE_SIZE == 0) { //si sobrepasamos límite de pagina reservamos una nueva
@@ -212,17 +212,22 @@ int sys_fork(void)
     copy_data((void*)(pag<<12), (void*)((pag+NUM_PAG_DATA)<<12), PAGE_SIZE);
     del_ss_pag(parent_PT, pag+NUM_PAG_DATA);
   }
-  /*
-  //Copiar datos del heap: Copia directa datos??
+
+  //Copiar datos del heap: Copia directa datos
+  //regiones paginas para la Tp del padre
+  int pagRegionIni = NUM_PAG_KERNEL+NUM_PAG_CODE;
+  int pagRegionFin = NUM_PAG_KERNEL+NUM_PAG_CODE + NUM_PAG_DATA;
   char *pointer_current_start = current()->heap_start_proc;
-  while (pointer_current_start < current()->heap_end_proc) {
-    unsigned int ph_page = get_frame(parent_PT,(int)pointer_current_start/PAGE_SIZE);
-    set_ss_pag(process_PT,(unsigned int)pointer_current_start/PAGE_SIZE, ph_page);
-    pointer_current_start += PAGE_SIZE;
+  while (pointer_current_start < current()->heap_pointer_proc) {  //copiamos hasta donde llegue el heap
+      for (i = pagRegionIni; i < pagRegionFin && pointer_current_start < current()->heap_pointer_proc; i++) {
+        unsigned int ph_page = get_frame(parent_PT,(int)pointer_current_start/PAGE_SIZE); //cogemos el frame del padre
+        set_ss_pag(process_PT,i+NUM_PAG_DATA, ph_page);  //asociamos con la TP del hijo
+        copy_data((void*) (i << 12), (void*) ((i+NUM_PAG_DATA)<<12), PAGE_SIZE);
+        del_ss_pag(parent_PT, i+NUM_PAG_DATA);
+        pointer_current_start += PAGE_SIZE;
+      }
   }
-  */
- 
-  //Si fuese con el COW, como deberiamos de marcar las paginas con permiso de solo lectura en la TP del padre y del hijo?
+  
 
   /* Deny access to the child's memory space */
   set_cr3(get_DIR(current()));
