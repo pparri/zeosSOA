@@ -74,8 +74,8 @@ void printk(char *string)
 int cursor_move(int posX, int posY)
 {
   if ((posX >= NUM_ROWS || posX < 0) || (posY >= NUM_COLUMNS || posY < 0)) return -EINVAL;
-  x = posX;
-  y= posY;
+  x = posY;
+  y = posX;
   return 0;
 }
 
@@ -92,15 +92,15 @@ int asthetic_change(int color, int background)
 /* SPRITE */
 int spriteDraw(int posX, int posY, Sprite *sp)
 {
-  //falta chekear
-  /*
-  for (int i = posX; i < sp.x; ++i)
-  {
-    for (int j = posY; j < sp.y; ++j)
-    {
-      printc_xy(sp.content[i][j]);
-      --pposy;
+    if ((posX >= NUM_ROWS || posX < 0) || (posY >= NUM_COLUMNS || posY < 0)) return -EINVAL; 
+    else if (sp == NULL || sp->content == NULL) return -EINVAL; 
+    for (int row = 0; row < sp->x; ++row) {
+        for (int col = 0; col < sp->y; ++col) 
+        {
+          int xPos = posX + col;
+          int yPos = posY + row;
+          printc_xy(xPos, yPos, sp->content[row * sp->y + col]);
+        }
     }
-  }
-  */
+    return 0;
 }
