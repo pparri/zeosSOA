@@ -56,6 +56,8 @@ int __attribute__ ((__section__(".text.main")))
   char buffer = id + '0';
   if (id != -1) write (1,buffer, 2);
 
+  semWait(0);
+  semSignal(0);
   
   return 0;
 

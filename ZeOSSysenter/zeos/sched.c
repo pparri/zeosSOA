@@ -34,6 +34,10 @@ struct list_head freequeue;
 // Ready queue
 struct list_head readyqueue;
 
+
+struct sem_t semafors[10]; //vector de semafors
+
+
 void init_stats(struct stats *s)
 {
 	s->user_ticks = 0;
@@ -232,6 +236,11 @@ void init_sched()
 {
   init_freequeue();
   INIT_LIST_HEAD(&readyqueue);
+  for (int i = 0; i < 10; ++i) {
+    semafors[i].count = NULL;
+    semafors[i].semid = -1;
+    semafors[i].TID = -1;
+  }
 }
 
 struct task_struct* current()

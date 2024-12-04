@@ -20,6 +20,8 @@
 #define LECTURA 0
 #define ESCRIPTURA 1
 
+extern struct sem_t semafors[10];
+
 void * get_ebp();
 
 int check_fd(int fd, int permissions)
@@ -350,4 +352,54 @@ int sys_get_stats(int pid, struct stats *st)
     }
   }
   return -ESRCH; /*ESRCH */
+}
+
+int sys_semCreate(int value) {
+ for (int i = 0; i < 10; ++i) {
+  if (semafors[i].semid == -1) {
+    semafors[i].semid = i;  //semaforos van de 0 a 9
+    semafors[i].count = value;
+    semafors[i].TID = current()->PID; //tid del thread que lo ha creado
+    INIT_LIST_HEAD(&semafors[i].blocked);
+    printk("creado");
+    return i+1;
+  }
+
+  return -1;
+ }
+}
+int sys_semWait(int semID) {
+  if (semID > 10 || semID < 0) return -1;
+  if (semafors[semID].semid != semID) return -1;
+  semafors[semID].count--;
+  if (semafors[semID].count < 0) {
+    printk("bloqueamos\n");
+    list_add(&current()->list,&semafors[semID].blocked);
+    sched_next_rr();
+  }
+  return 1;
+}
+
+int sys_semSignal(int semID) {
+ if (semID > 10 || semID < 0) return -1;
+  printk("desbloqueamos\n");
+  if (semafors[semID].semid != semID) return -1;
+  semafors[semID].count++;
+  if (semafors[semID].count <= 0) {
+    struct list_head *l = list_first(&semafors[semID].blocked);
+    list_del(l);
+    list_add(l,&readyqueue);
+  }
+  return 1;
+}
+
+int sys_semDestroy(int semID) {
+  if (current()->PID != semafors[semID].TID) return -1;
+  else {
+    semafors[semID].count = NULL;
+    semafors[semID].semid = -1;
+    semafors[semID].TID = -1;
+    return 1;
+  }
+
 }

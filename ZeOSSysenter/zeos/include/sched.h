@@ -35,6 +35,13 @@ union task_union {
   unsigned long stack[KERNEL_STACK_SIZE];    /* pila de sistema, per procés */
 };
 
+struct sem_t {
+  int semid;
+  int count;
+  struct list_head blocked;
+  int TID; //id del thread que lo ha creado
+};
+
 extern union task_union protected_tasks[NR_TASKS+2];
 extern union task_union *task; /* Vector de tasques */
 extern struct task_struct *idle_task;
