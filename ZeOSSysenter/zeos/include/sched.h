@@ -28,7 +28,7 @@ struct task_struct {
   char* heap_end_proc;
   char *heap_pointer_proc;
 };
-
+/*
 struct thread_struct {
     int TID;
     //void (*function)(void*);      
@@ -42,10 +42,18 @@ struct thread_struct {
     unsigned long system_stack[KERNEL_STACK_SIZE];
     int total_quantum;
 };
+*/
 
 union task_union {
   struct task_struct task;
   unsigned long stack[KERNEL_STACK_SIZE];    /* pila de sistema, per procés */
+};
+
+struct sem_t {
+  int semid;
+  int count;
+  struct list_head blocked;
+  int TID; //id del thread que lo ha creado
 };
 
 extern union task_union protected_tasks[NR_TASKS+2];

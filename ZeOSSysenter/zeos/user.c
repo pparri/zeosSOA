@@ -26,6 +26,12 @@ void put_hex(unsigned long num)
     }
 }
 
+
+void hola(int i)
+{
+    write(1,"hola",i);
+}
+
 int __attribute__ ((__section__(".text.main")))
   main(void)
 {
@@ -33,6 +39,7 @@ int __attribute__ ((__section__(".text.main")))
      /* __asm__ __volatile__ ("mov %0, %%cr3"::"r" (0) ); */
 
 
+  /*
   write(1, "\n", 1);
   char *region1 = sbrk(100); 
   put_hex((unsigned long)region1);
@@ -46,6 +53,28 @@ int __attribute__ ((__section__(".text.main")))
   char *region3 = sbrk(-5); 
   put_hex((unsigned long)region3);
   write(1, "\n", 1);
+
+  int f = fork();
+
+  if (f == 0) write (1,"Soy el hijo\n",12);
+  else write(1,"Soy el padre\n",13);
+
+  int id = semCreate(0);
+  char buffer = id + '0';
+  if (id != -1) write (1,buffer, 2);
+
+  semWait(0);
+  semSignal(0);
+  
+  return 0;
+
+  */
+
+  int i = 4;
+  threadCreate(hola,&i);
+
+
+  /*
 
 char clearScreenContent[] = {
     ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
@@ -124,11 +153,14 @@ spritePut(0, 0, &smileySprite);
   char *b;
   int x = 4;
   int y = 11;
+  */
   while(1)
   {
+    /*
     gotoXY(x,y);
     //gotoXY((++x)%25,(++y)%80);
     int rbytes = getKey(&b);
     if (rbytes > 0) write(1,&b,rbytes);
+    */
   }
 }

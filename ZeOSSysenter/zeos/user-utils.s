@@ -203,6 +203,65 @@ nok:
  movl $27, %eax
  call syscall_sysenter
  test %eax, %eax
+ call syscall_sysenter
+ popl %ebx
+ test %eax, %eax
+ js nok
+ popl %ebp
+ ret
+
+
+.globl semCreate; .type semCreate, @function; .align 0; semCreate:
+ pushl %ebp
+ movl %esp, %ebp
+ pushl %ebx;
+ movl $28, %eax
+ movl 0x8(%ebp), %ebx;
+ call syscall_sysenter
+ popl %ebx
+ test %eax, %eax
+ js nok
+ popl %ebp
+ ret
+
+
+.globl semWait; .type semWait, @function; .align 0; semWait:
+ pushl %ebp
+ movl %esp, %ebp
+ pushl %ebx;
+ movl $29, %eax
+ movl 0x8(%ebp), %ebx;
+ call syscall_sysenter
+ popl %ebx
+ test %eax, %eax
+ js nok
+ popl %ebp
+ ret
+
+
+.globl semSignal; .type semSignal, @function; .align 0; semSignal:
+ pushl %ebp
+ movl %esp, %ebp
+ pushl %ebx;
+ movl $30, %eax
+ movl 0x8(%ebp), %ebx;
+ call syscall_sysenter
+ popl %ebx
+ test %eax, %eax
+ js nok
+ popl %ebp
+ ret
+
+
+.globl semDestroy; .type semDestroy, @function; .align 0; semDestroy:
+ pushl %ebp
+ movl %esp, %ebp
+ pushl %ebx;
+ movl $31, %eax
+ movl 0x8(%ebp), %ebx;
+ call syscall_sysenter
+ popl %ebx
+ test %eax, %eax
  js nok
  popl %ebp
  ret

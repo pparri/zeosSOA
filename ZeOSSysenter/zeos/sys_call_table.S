@@ -30,10 +30,10 @@ ENTRY (sys_call_table)
 	.long sys_spritePut	//25
 	.long sys_threadCreate	//26
 	.long sys_threadExit	//27
-	.long sys_ni_syscall	//28
-	.long sys_ni_syscall	//29
-	.long sys_ni_syscall	//30
-	.long sys_ni_syscall	//31
+	.long sys_semCreate	//28
+	.long sys_semWait	//29
+	.long sys_semSignal	//30
+	.long sys_semDestroy	//31
 	.long sys_ni_syscall	//32
 	.long sys_ni_syscall	//33
 	.long sys_ni_syscall	//34

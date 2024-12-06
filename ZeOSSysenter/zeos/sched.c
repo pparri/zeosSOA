@@ -34,6 +34,10 @@ struct list_head freequeue;
 // Ready queue
 struct list_head readyqueue;
 
+
+struct sem_t semafors[10]; //vector de semafors
+
+
 void init_stats(struct stats *s)
 {
 	s->user_ticks = 0;
@@ -197,7 +201,7 @@ void init_task1(void)
 
   c->state=ST_RUN;
   c->heap_end_proc = TOTAL_PAGES << 12;
-  c->heap_start_proc = DATA_END;
+  c->heap_start_proc = INIT_HEAP; //dejamos las 20 paginas de reserva para la copia de datos y copia del heap
   c->heap_pointer_proc = c->heap_start_proc;
 
   remaining_quantum=c->total_quantum;
@@ -232,6 +236,11 @@ void init_sched()
 {
   init_freequeue();
   INIT_LIST_HEAD(&readyqueue);
+  for (int i = 0; i < 10; ++i) {
+    semafors[i].count = NULL;
+    semafors[i].semid = -1;
+    semafors[i].TID = -1;
+  }
 }
 
 struct task_struct* current()

@@ -20,6 +20,8 @@
 #define LECTURA 0
 #define ESCRIPTURA 1
 
+extern struct sem_t semafors[10];
+
 void * get_ebp();
 
 int check_fd(int fd, int permissions)
@@ -80,13 +82,13 @@ char * sys_sbrk(int size)
     union task_union* tu = (union task_union *) current();
     page_table_entry * PT = get_PT(current());
 
-    if ((unsigned long)new_pointer < DATA_END) return (char)NULL;
+    if ((unsigned long)new_pointer < INIT_HEAP) return (char)NULL; //tiene que ser mayor a la direccion que usamos para la copia de datos y heap
     // ++
     if (size > 0) 
     {
-      int p_log_nec = (size + PAGE_SIZE -1) / PAGE_SIZE;
+      int p_log_nec = (size + PAGE_SIZE -1) / PAGE_SIZE; //redondear para arriba las paginas necesarias
       int paginas_reservadas = (current()->heap_pointer_proc - current()->heap_start_proc) / PAGE_SIZE;
-      if (NUM_PAG_CODE + NUM_PAG_DATA + NUM_PAG_KERNEL + p_log_nec + paginas_reservadas > TOTAL_PAGES) return (char) NULL; //quedan páginas logicas?
+      if (NUM_PAG_CODE + 2* NUM_PAG_DATA + NUM_PAG_KERNEL + p_log_nec + paginas_reservadas > TOTAL_PAGES) return (char) NULL; //quedan páginas logicas?
       while ((unsigned long)current()->heap_pointer_proc < (unsigned long)new_pointer) 
       {
         if ((unsigned long)current()->heap_pointer_proc % PAGE_SIZE == 0) { //si sobrepasamos límite de pagina reservamos una nueva
@@ -145,36 +147,48 @@ int global_TID=1000;
 
 int sys_threadCreate(void (*function)(void*), void* parameter) 
 {
-  /*
     if (list_empty(&freequeue)) return -ENOMEM;
 
     struct list_head *lhcurrent = list_first(&freequeue);
     list_del(lhcurrent);
 
-    struct thread_struct *uchild = (struct thread_struct*)list_head_to_task_struct(lhcurrent);
-    uchild->TID = ++global_TID;
-    //uchild->function = function;
-    //uchild->parameter = parameter;
-    uchild->state = ST_READY;
-    uchild->possessed = current();
+    union task_union *uchild = (union task_union *)list_head_to_task_struct(lhcurrent);
+    copy_data(current(), uchild, sizeof(union task_union));
+    uchild->task.PID = ++global_TID;
+    uchild->task.state = ST_READY;
 
-    //punteros
-    uchild->task.register_esp-=sizeof(DWord);
-    *(DWord*)(uchild->task.register_esp)=(DWord)&ret_from_fork;
-    uchild->task.register_esp-=sizeof(DWord);
-    *(DWord*)(uchild->task.register_esp)=temp_ebp;
+    char *stack = (char *)(&uchild->stack[KERNEL_STACK_SIZE]);
+    stack -= sizeof(void*); // Espacio para el parámetro
+    *(void**)stack = parameter;
+    stack -= sizeof(void*); // Espacio para la dirección de retorno
+    *(void**)stack = NULL; // Al terminar la función del hilo, no vuelve a otra función
+    stack -= sizeof(void*); // Espacio para el puntero de instrucción
+    *(void**)stack = function;
 
-    list_add_tail(&uchild->list,&readyqueue);
+    uchild->task.register_esp = (unsigned long)stack;
 
-    return uchild->TID;
-    */
+    init_stats(&(uchild->task.p_stats));
+    list_add_tail(&(uchild->task.list), &readyqueue);
+
+    return uchild->task.PID;
 }
 
 void sys_threadExit(void) 
 {
+    struct task_struct *current_task = current(); // Hilo que está saliendo.
+    page_table_entry *PT = get_PT(current_task);
+
+    //heap del hilo
+    while (current_task->heap_pointer_proc > current_task->heap_start_proc) {
+        free_frame(get_frame(PT, (unsigned long)current_task->heap_pointer_proc / PAGE_SIZE));
+        del_ss_pag(PT, (unsigned long)current_task->heap_pointer_proc / PAGE_SIZE);
+        current_task->heap_pointer_proc -= PAGE_SIZE;
+    }
+    list_add_tail(&(current_task->list), &freequeue);
+
+    sched_next_rr();
     return;
 }
-
 
 int global_PID=1000;
 
@@ -247,17 +261,22 @@ int sys_fork(void)
     copy_data((void*)(pag<<12), (void*)((pag+NUM_PAG_DATA)<<12), PAGE_SIZE);
     del_ss_pag(parent_PT, pag+NUM_PAG_DATA);
   }
-  /*
-  //Copiar datos del heap: Copia directa datos??
+
+  //Copiar datos del heap: Copia directa datos
+  //regiones paginas para la Tp del padre
+  int pagRegionIni = NUM_PAG_KERNEL+NUM_PAG_CODE;
+  int pagRegionFin = NUM_PAG_KERNEL+NUM_PAG_CODE + NUM_PAG_DATA;
   char *pointer_current_start = current()->heap_start_proc;
-  while (pointer_current_start < current()->heap_end_proc) {
-    unsigned int ph_page = get_frame(parent_PT,(int)pointer_current_start/PAGE_SIZE);
-    set_ss_pag(process_PT,(unsigned int)pointer_current_start/PAGE_SIZE, ph_page);
-    pointer_current_start += PAGE_SIZE;
+  while (pointer_current_start < current()->heap_pointer_proc) {  //copiamos hasta donde llegue el heap
+      for (i = pagRegionIni; i < pagRegionFin && pointer_current_start < current()->heap_pointer_proc; i++) {
+        unsigned int ph_page = get_frame(parent_PT,(int)pointer_current_start/PAGE_SIZE); //cogemos el frame del padre
+        set_ss_pag(process_PT,i+NUM_PAG_DATA, ph_page);  //asociamos con la TP del hijo
+        copy_data((void*) (i << 12), (void*) ((i+NUM_PAG_DATA)<<12), PAGE_SIZE);
+        del_ss_pag(parent_PT, i+NUM_PAG_DATA);
+        pointer_current_start += PAGE_SIZE;
+      }
   }
-  */
- 
-  //Si fuese con el COW, como deberiamos de marcar las paginas con permiso de solo lectura en la TP del padre y del hijo?
+  
 
   /* Deny access to the child's memory space */
   set_cr3(get_DIR(current()));
@@ -380,4 +399,54 @@ int sys_get_stats(int pid, struct stats *st)
     }
   }
   return -ESRCH; /*ESRCH */
+}
+
+int sys_semCreate(int value) {
+ for (int i = 0; i < 10; ++i) {
+  if (semafors[i].semid == -1) {
+    semafors[i].semid = i;  //semaforos van de 0 a 9
+    semafors[i].count = value;
+    semafors[i].TID = current()->PID; //tid del thread que lo ha creado
+    INIT_LIST_HEAD(&semafors[i].blocked);
+    printk("creado");
+    return i+1;
+  }
+
+  return -1;
+ }
+}
+int sys_semWait(int semID) {
+  if (semID > 10 || semID < 0) return -1;
+  if (semafors[semID].semid != semID) return -1;
+  semafors[semID].count--;
+  if (semafors[semID].count < 0) {
+    printk("bloqueamos\n");
+    list_add(&current()->list,&semafors[semID].blocked);
+    sched_next_rr();
+  }
+  return 1;
+}
+
+int sys_semSignal(int semID) {
+ if (semID > 10 || semID < 0) return -1;
+  printk("desbloqueamos\n");
+  if (semafors[semID].semid != semID) return -1;
+  semafors[semID].count++;
+  if (semafors[semID].count <= 0) {
+    struct list_head *l = list_first(&semafors[semID].blocked);
+    list_del(l);
+    list_add(l,&readyqueue);
+  }
+  return 1;
+}
+
+int sys_semDestroy(int semID) {
+  if (current()->PID != semafors[semID].TID) return -1;
+  else {
+    semafors[semID].count = NULL;
+    semafors[semID].semid = -1;
+    semafors[semID].TID = -1;
+    return 1;
+  }
+
 }

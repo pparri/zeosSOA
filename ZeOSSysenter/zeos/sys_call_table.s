@@ -38,10 +38,10 @@
  .long sys_spritePut
  .long sys_threadCreate
  .long sys_threadExit
- .long sys_ni_syscall
- .long sys_ni_syscall
- .long sys_ni_syscall
- .long sys_ni_syscall
+ .long sys_semCreate
+ .long sys_semWait
+ .long sys_semSignal
+ .long sys_semDestroy
  .long sys_ni_syscall
  .long sys_ni_syscall
  .long sys_ni_syscall
