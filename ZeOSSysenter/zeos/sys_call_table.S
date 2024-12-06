@@ -28,8 +28,8 @@ ENTRY (sys_call_table)
 	.long sys_gotoXY	//23
 	.long sys_SetColor	//24
 	.long sys_spritePut	//25
-	.long sys_ni_syscall	//26
-	.long sys_ni_syscall	//27
+	.long sys_threadCreate	//26
+	.long sys_threadExit	//27
 	.long sys_ni_syscall	//28
 	.long sys_ni_syscall	//29
 	.long sys_ni_syscall	//30

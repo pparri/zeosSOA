@@ -27,7 +27,20 @@ struct task_struct {
   char* heap_start_proc;
   char* heap_end_proc;
   char *heap_pointer_proc;
+};
 
+struct thread_struct {
+    int TID;
+    //void (*function)(void*);      
+    //void* parameter;               
+    enum state_t state;           
+    struct list_head list;
+    union task_union* possessed;
+    unsigned int register_esp;
+    unsigned int register_ebp;
+    unsigned long user_stack[4096];
+    unsigned long system_stack[KERNEL_STACK_SIZE];
+    int total_quantum;
 };
 
 union task_union {

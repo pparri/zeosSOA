@@ -114,7 +114,7 @@ ENTRY(getKey)
 	popl %ebp
 	ret
 
-	/* char* sbrk(int size) */
+/* char* sbrk(int size) */
 ENTRY(sbrk)
 	pushl %ebp
 	movl %esp, %ebp
@@ -171,6 +171,32 @@ ENTRY(spritePut)
 	popl %ebx
 	test %eax, %eax
 	js nok	// if (eax < 0) -> 
+	popl %ebp
+	ret
+
+/* int threadCreate(void (*function)(void* arg), void* parameter) */
+ENTRY(threadCreate)
+	pushl %ebp
+	movl %esp, %ebp
+	pushl %ebx;  // Save EBX, ESI and EDI if modified
+	movl $26, %eax
+	movl 0x8(%ebp), %ebx;	//func
+	movl 0xC(%ebp), %ecx;	//parameter
+	call syscall_sysenter
+	popl %ebx
+	test %eax, %eax
+	js nok	// if (eax < 0) -> 
+	popl %ebp
+	ret
+
+/* void threadExit() */
+ENTRY(threadExit)
+	pushl %ebp
+	movl %esp, %ebp
+	movl $27, %eax
+	call syscall_sysenter
+	test %eax, %eax
+	js nok	// if (eax < 0) -->
 	popl %ebp
 	ret
 

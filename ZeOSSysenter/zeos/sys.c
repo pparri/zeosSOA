@@ -141,6 +141,41 @@ int sys_spritePut(int posX, int posY, Sprite* sp)
   return spriteDraw(posX,posY,sp);
 }
 
+int global_TID=1000;
+
+int sys_threadCreate(void (*function)(void*), void* parameter) 
+{
+  /*
+    if (list_empty(&freequeue)) return -ENOMEM;
+
+    struct list_head *lhcurrent = list_first(&freequeue);
+    list_del(lhcurrent);
+
+    struct thread_struct *uchild = (struct thread_struct*)list_head_to_task_struct(lhcurrent);
+    uchild->TID = ++global_TID;
+    //uchild->function = function;
+    //uchild->parameter = parameter;
+    uchild->state = ST_READY;
+    uchild->possessed = current();
+
+    //punteros
+    uchild->task.register_esp-=sizeof(DWord);
+    *(DWord*)(uchild->task.register_esp)=(DWord)&ret_from_fork;
+    uchild->task.register_esp-=sizeof(DWord);
+    *(DWord*)(uchild->task.register_esp)=temp_ebp;
+
+    list_add_tail(&uchild->list,&readyqueue);
+
+    return uchild->TID;
+    */
+}
+
+void sys_threadExit(void) 
+{
+    return;
+}
+
+
 int global_PID=1000;
 
 int ret_from_fork()
