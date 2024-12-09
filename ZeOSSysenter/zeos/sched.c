@@ -169,9 +169,9 @@ void init_idle (void)
   union task_union *uc = (union task_union*)c;
 
   c->PID=0;
+  c->TID=0;
 
   c->total_quantum=DEFAULT_QUANTUM;
-
   init_stats(&c->p_stats);
 
   allocate_DIR(c);
@@ -196,6 +196,7 @@ void init_task1(void)
   union task_union *uc = (union task_union*)c;
 
   c->PID=1;
+  c->TID=1;
 
   c->total_quantum=DEFAULT_QUANTUM;
 

@@ -152,30 +152,77 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
     struct list_head *lhcurrent = list_first(&freequeue);
     list_del(lhcurrent);
 
+    //Alloc tcb
     union task_union *uchild = (union task_union *)list_head_to_task_struct(lhcurrent);
+    //init tcb
     copy_data(current(), uchild, sizeof(union task_union));
-    uchild->task.PID = ++global_TID;
+    //TID + others
+    uchild->task.TID = ++global_TID;
+    uchild->task.PID = current()->PID;
     uchild->task.state = ST_READY;
 
-    char *stack = (char *)(&uchild->stack[KERNEL_STACK_SIZE]);
-    stack -= sizeof(void*); // Espacio para el parámetro
-    *(void**)stack = parameter;
-    stack -= sizeof(void*); // Espacio para la dirección de retorno
-    *(void**)stack = NULL; // Al terminar la función del hilo, no vuelve a otra función
-    stack -= sizeof(void*); // Espacio para el puntero de instrucción
-    *(void**)stack = function;
+    //Alloc user stack
+    /*
+    page_table_entry *child_PT = get_PT(&uchild->task);
+    int new_ph_pag = alloc_frame();
+    if (new_ph_pag == -1) return -ENOMEM; 
+    set_ss_pag(child_PT,0, new_ph_pag);
+    */
 
-    uchild->task.register_esp = (unsigned long)stack;
+    //Alloc tls
+    /* Copy parent's SYSTEM and CODE to child. */
+    page_table_entry *process_PT = get_PT(&uchild->task);
+    page_table_entry *parent_PT = get_PT(current());
+    int pag, i;
+    for (pag=0; pag<NUM_PAG_KERNEL; pag++)
+    {
+      set_ss_pag(process_PT, pag, get_frame(parent_PT, pag));
+    }
+    for (pag=0; pag<NUM_PAG_CODE; pag++)
+    {
+      set_ss_pag(process_PT, PAG_LOG_INIT_CODE+pag, get_frame(parent_PT, PAG_LOG_INIT_CODE+pag));
+    }
+    
+
+    //Copiar datos del heap: Copia directa datos
+    //regiones paginas para la Tp del padre
+    int pagRegionIni = NUM_PAG_KERNEL+NUM_PAG_CODE;
+    int pagRegionFin = NUM_PAG_KERNEL+NUM_PAG_CODE + NUM_PAG_DATA;
+    char *pointer_current_start = current()->heap_start_proc;
+    while (pointer_current_start < current()->heap_pointer_proc) {  //copiamos hasta donde llegue el heap
+        for (i = pagRegionIni; i < pagRegionFin && pointer_current_start < current()->heap_pointer_proc; i++) {
+          unsigned int ph_page = get_frame(parent_PT,(int)pointer_current_start/PAGE_SIZE); //cogemos el frame del padre
+          set_ss_pag(process_PT,i+NUM_PAG_DATA, ph_page);  //asociamos con la TP del hijo
+          copy_data((void*) (i << 12), (void*) ((i+NUM_PAG_DATA)<<12), PAGE_SIZE);
+          del_ss_pag(parent_PT, i+NUM_PAG_DATA);
+          pointer_current_start += PAGE_SIZE;
+        }
+    }
+
+    //Init user stack (frame activation)
+    unsigned long st[KERNEL_STACK_SIZE];
+    st[KERNEL_STACK_SIZE-3] = 0;
+    st[KERNEL_STACK_SIZE-2] = function;
+    st[KERNEL_STACK_SIZE-1] = parameter;
+    uchild->task.ustack = st;
+
+    //ctx eje
+    uchild->stack[KERNEL_STACK_SIZE-5] = function;
+    uchild->task.register_esp = &uchild->task.ustack[KERNEL_STACK_SIZE-3];
+    uchild->stack[KERNEL_STACK_SIZE-2] = &uchild->task.ustack[KERNEL_STACK_SIZE-3];
 
     init_stats(&(uchild->task.p_stats));
+
+    //RQ
     list_add_tail(&(uchild->task.list), &readyqueue);
 
-    return uchild->task.PID;
-}
+    //printk("hey");
+    return uchild->task.TID;
+} 
 
 void sys_threadExit(void) 
 {
-    struct task_struct *current_task = current(); // Hilo que está saliendo.
+    struct task_struct *current_task = current();
     page_table_entry *PT = get_PT(current_task);
 
     //heap del hilo

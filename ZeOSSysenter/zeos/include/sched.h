@@ -18,6 +18,7 @@ enum state_t { ST_RUN, ST_READY, ST_BLOCKED };
 
 struct task_struct {
   int PID;			/* Process ID. This MUST be the first field of the struct. */
+  int TID;
   page_table_entry * dir_pages_baseAddr;
   struct list_head list;	/* Task struct enqueuing */
   int register_esp;		/* position in the stack */
@@ -27,22 +28,8 @@ struct task_struct {
   char* heap_start_proc;
   char* heap_end_proc;
   char *heap_pointer_proc;
+  unsigned long *ustack;
 };
-/*
-struct thread_struct {
-    int TID;
-    //void (*function)(void*);      
-    //void* parameter;               
-    enum state_t state;           
-    struct list_head list;
-    union task_union* possessed;
-    unsigned int register_esp;
-    unsigned int register_ebp;
-    unsigned long user_stack[4096];
-    unsigned long system_stack[KERNEL_STACK_SIZE];
-    int total_quantum;
-};
-*/
 
 union task_union {
   struct task_struct task;
@@ -80,6 +67,7 @@ void schedule(void);
 struct task_struct * current();
 
 void task_switch(union task_union*t);
+
 void switch_stack(int * save_sp, int new_sp);
 
 void sched_next_rr(void);

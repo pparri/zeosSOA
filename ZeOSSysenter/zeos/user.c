@@ -26,11 +26,12 @@ void put_hex(unsigned long num)
     }
 }
 
-
+/*
 void hola(int i)
 {
     write(1,"hola",i);
 }
+*/
 
 int __attribute__ ((__section__(".text.main")))
   main(void)
@@ -70,9 +71,6 @@ int __attribute__ ((__section__(".text.main")))
 
   */
 
-  int i = 4;
-  threadCreate(hola,&i);
-
 
   /*
 
@@ -110,9 +108,8 @@ Sprite clearScreenSprite = {
 };
 
 spritePut(0, 0, &clearScreenSprite);
-
-SetColor(1,5);
-
+*/
+/*
 char spriteContent[] = {
     'M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M',
     'M',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','M',
@@ -141,19 +138,24 @@ char spriteContent[] = {
     'M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M',
 
 };
-
-Sprite smileySprite = {
+Sprite marcoSprite = {
     .x = 25,       
     .y = 80,
     .content = spriteContent
 };
+*/
 
-spritePut(0, 0, &smileySprite);
+//SetColor(1,5);
+//spritePut(0, 0, &marcoSprite);
+
+  int i = 4;
+  //threadCreate(hola,&i);
+  //threadExit();
 
   char *b;
   int x = 4;
   int y = 11;
-  */
+  
   while(1)
   {
     /*
