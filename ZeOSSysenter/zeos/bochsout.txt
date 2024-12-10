@@ -1,0 +1,2393 @@
+00000000000i[      ] Bochs x86 Emulator 2.6.7
+00000000000i[      ]   Built from SVN snapshot on November 2, 2014
+00000000000i[      ] Compiled on Jun 28 2017 at 12:46:11
+00000000000i[      ] System configuration
+00000000000i[      ]   processors: 1 (cores=1, HT threads=1)
+00000000000i[      ]   A20 line support: yes
+00000000000i[      ] IPS is set to 4000000
+00000000000i[      ] CPU configuration
+00000000000i[      ]   SMP support: no
+00000000000i[      ]   level: 6
+00000000000i[      ]   APIC support: xapic
+00000000000i[      ]   FPU support: yes
+00000000000i[      ]   MMX support: yes
+00000000000i[      ]   3dnow! support: no
+00000000000i[      ]   SEP support: yes
+00000000000i[      ]   SIMD support: sse2
+00000000000i[      ]   XSAVE support: no 
+00000000000i[      ]   AES support: no
+00000000000i[      ]   SHA support: no
+00000000000i[      ]   MOVBE support: no
+00000000000i[      ]   ADX support: no
+00000000000i[      ]   x86-64 support: no
+00000000000i[      ]   MWAIT support: yes
+00000000000i[      ] Optimization configuration
+00000000000i[      ]   RepeatSpeedups support: no
+00000000000i[      ]   Fast function calls: no
+00000000000i[      ]   Handlers Chaining speedups: no
+00000000000i[      ] Devices configuration
+00000000000i[      ]   NE2000 support: no
+00000000000i[      ]   PCI support: yes, enabled=yes
+00000000000i[      ]   SB16 support: no
+00000000000i[      ]   USB support: no
+00000000000i[      ]   VGA extension support: vbe
+00000000000i[MEM0  ] allocated memory at 0x7fc133267010. after alignment, vector=0x7fc133268000
+00000000000i[MEM0  ] 16,00MB
+00000000000i[MEM0  ] mem block size = 0x00100000, blocks=16
+00000000000i[MEM0  ] rom at 0xfffe0000/131072 ('/opt/bochs_gdb/share/bochs/BIOS-bochs-latest')
+00000000000i[PLUGIN] init_dev of 'pci' plugin device by virtual method
+00000000000i[DEV   ] i440FX PMC present at device 0, function 0
+00000000000i[PLUGIN] init_dev of 'pci2isa' plugin device by virtual method
+00000000000i[DEV   ] PIIX3 PCI-to-ISA bridge present at device 1, function 0
+00000000000i[PLUGIN] init_dev of 'cmos' plugin device by virtual method
+00000000000i[CMOS  ] Using local time for initial clock
+00000000000i[CMOS  ] Setting initial clock to: Tue Dec 10 18:53:06 2024 (time0=1733853186)
+00000000000i[PLUGIN] init_dev of 'dma' plugin device by virtual method
+00000000000i[DMA   ] channel 4 used by cascade
+00000000000i[PLUGIN] init_dev of 'pic' plugin device by virtual method
+00000000000i[PLUGIN] init_dev of 'pit' plugin device by virtual method
+00000000000i[PLUGIN] init_dev of 'vga' plugin device by virtual method
+00000000000i[MEM0  ] Register memory access handlers: 0x0000000a0000 - 0x0000000bffff
+00000000000i[VGA   ] interval=200000
+00000000000i[MEM0  ] Register memory access handlers: 0x0000e0000000 - 0x0000e0ffffff
+00000000000i[BXVGA ] VBE Bochs Display Extension Enabled
+00000000000i[XGUI  ] test_alloc_colors: 16 colors available out of 16 colors tried
+00000000000i[XGUI  ] font 8 wide x 16 high, display depth = 24
+00000000000i[MEM0  ] rom at 0xc0000/41472 ('/opt/bochs_gdb/share/bochs/VGABIOS-lgpl-latest')
+00000000000i[PLUGIN] init_dev of 'floppy' plugin device by virtual method
+00000000000i[DMA   ] channel 2 used by Floppy Drive
+00000000000i[FLOPPY] fd0: './zeos.bin' ro=0, h=2,t=80,spt=18
+00000000000i[PLUGIN] init_dev of 'acpi' plugin device by virtual method
+00000000000i[DEV   ] ACPI Controller present at device 1, function 3
+00000000000i[PLUGIN] init_dev of 'ioapic' plugin device by virtual method
+00000000000i[IOAPIC] initializing I/O APIC
+00000000000i[MEM0  ] Register memory access handlers: 0x0000fec00000 - 0x0000fec00fff
+00000000000i[IOAPIC] IOAPIC enabled (base address = 0xfec00000)
+00000000000i[PLUGIN] init_dev of 'keyboard' plugin device by virtual method
+00000000000i[KBD   ] will paste characters every 400 keyboard ticks
+00000000000i[PLUGIN] init_dev of 'harddrv' plugin device by virtual method
+00000000000i[HD    ] Using boot sequence floppy, none, none
+00000000000i[HD    ] Floppy boot signature check is enabled
+00000000000i[PLUGIN] init_dev of 'pci_ide' plugin device by virtual method
+00000000000i[DEV   ] PIIX3 PCI IDE controller present at device 1, function 1
+00000000000i[PLUGIN] init_dev of 'unmapped' plugin device by virtual method
+00000000000i[PLUGIN] init_dev of 'biosdev' plugin device by virtual method
+00000000000i[PLUGIN] init_dev of 'speaker' plugin device by virtual method
+00000000000e[PCSPK ] Failed to open /dev/console: Permission denied
+00000000000e[PCSPK ] Deactivating beep on console
+00000000000i[PLUGIN] init_dev of 'extfpuirq' plugin device by virtual method
+00000000000i[PLUGIN] init_dev of 'parallel' plugin device by virtual method
+00000000000i[PAR   ] parallel port 1 at 0x0378 irq 7
+00000000000i[PLUGIN] init_dev of 'serial' plugin device by virtual method
+00000000000i[SER   ] com1 at 0x03f8 irq 4 (mode: null)
+00000000000i[PLUGIN] register state of 'pci' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'pci2isa' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'cmos' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'dma' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'pic' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'pit' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'vga' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'floppy' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'unmapped' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'biosdev' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'speaker' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'extfpuirq' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'parallel' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'serial' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'acpi' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'ioapic' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'keyboard' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'harddrv' plugin device by virtual method
+00000000000i[PLUGIN] register state of 'pci_ide' plugin device by virtual method
+00000000000i[SYS   ] bx_pc_system_c::Reset(HARDWARE) called
+00000000000i[CPU0  ] cpu hardware reset
+00000000000i[APIC0 ] allocate APIC id=0 (MMIO enabled) to 0x0000fee00000
+00000000000i[CPU0  ] CPUID[0x00000000]: 00000005 756e6547 6c65746e 49656e69
+00000000000i[CPU0  ] CPUID[0x00000001]: 00000633 00010800 00000008 1fcbfbff
+00000000000i[CPU0  ] CPUID[0x00000002]: 00410601 00000000 00000000 00000000
+00000000000i[CPU0  ] CPUID[0x00000003]: 00000000 00000000 00000000 00000000
+00000000000i[CPU0  ] CPUID[0x00000004]: 00000000 00000000 00000000 00000000
+00000000000i[CPU0  ] CPUID[0x00000005]: 00000040 00000040 00000003 00000020
+00000000000i[PLUGIN] reset of 'pci' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'pci2isa' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'cmos' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'dma' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'pic' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'pit' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'vga' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'floppy' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'acpi' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'ioapic' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'keyboard' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'harddrv' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'pci_ide' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'unmapped' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'biosdev' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'speaker' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'extfpuirq' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'parallel' plugin device by virtual method
+00000000000i[PLUGIN] reset of 'serial' plugin device by virtual method
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[GDBST ] addr 000000000000fff0 len 1
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[GDBST ] addr 000000000000fff0 len 1
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[GDBST ] addr 000000000000ffc0 len 40
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[GDBST ] addr 000000000000fff0 len 8
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[GDBST ] addr 000000000000fff0 len 7
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[GDBST ] addr 0000000000011380 len 40
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[GDBST ] addr 0000000000011447 len 1
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[GDBST ] Setting breakpoint at 0000000000011447
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[XGUI  ] Mouse capture off
+00000000000i[XGUI  ] Mouse capture off
+00000004661i[BIOS  ] $Revision: 12412 $ $Date: 2014-07-10 09:28:59 +0200 (Do, 10. Jul 2014) $
+00000318049i[KBD   ] reset-disable command received
+00000320818i[BIOS  ] Starting rombios32
+00000321256i[BIOS  ] Shutdown flag 0
+00000321840i[BIOS  ] ram_size=0x01000000
+00000322261i[BIOS  ] ram_end=16MB
+00000362771i[BIOS  ] Found 1 cpu(s)
+00000376975i[BIOS  ] bios_table_addr: 0x000fa498 end=0x000fcc00
+00000704770i[PCI   ] i440FX PMC write to PAM register 59 (TLB Flush)
+00001032699i[P2ISA ] PCI IRQ routing: PIRQA# set to 0x0b
+00001032718i[P2ISA ] PCI IRQ routing: PIRQB# set to 0x09
+00001032737i[P2ISA ] PCI IRQ routing: PIRQC# set to 0x0b
+00001032756i[P2ISA ] PCI IRQ routing: PIRQD# set to 0x09
+00001032766i[P2ISA ] write: ELCR2 = 0x0a
+00001033536i[BIOS  ] PIIX3/PIIX4 init: elcr=00 0a
+00001041217i[BIOS  ] PCI: bus=0 devfn=0x00: vendor_id=0x8086 device_id=0x1237 class=0x0600
+00001043496i[BIOS  ] PCI: bus=0 devfn=0x08: vendor_id=0x8086 device_id=0x7000 class=0x0601
+00001045614i[BIOS  ] PCI: bus=0 devfn=0x09: vendor_id=0x8086 device_id=0x7010 class=0x0101
+00001045839i[PIDE  ] new BM-DMA address: 0xc000
+00001046455i[BIOS  ] region 4: 0x0000c000
+00001048489i[BIOS  ] PCI: bus=0 devfn=0x0b: vendor_id=0x8086 device_id=0x7113 class=0x0680
+00001048721i[ACPI  ] new irq line = 11
+00001048733i[ACPI  ] new irq line = 9
+00001048758i[ACPI  ] new PM base address: 0xb000
+00001048772i[ACPI  ] new SM base address: 0xb100
+00001048800i[PCI   ] setting SMRAM control register to 0x4a
+00001212893i[CPU0  ] Enter to System Management Mode
+00001212904i[CPU0  ] RSM: Resuming from System Management Mode
+00001376925i[PCI   ] setting SMRAM control register to 0x0a
+00001391791i[BIOS  ] MP table addr=0x000fa570 MPC table addr=0x000fa4a0 size=0xc8
+00001393613i[BIOS  ] SMBIOS table addr=0x000fa580
+00001395781i[BIOS  ] ACPI tables: RSDP addr=0x000fa6a0 ACPI DATA addr=0x00ff0000 size=0xf72
+00001398970i[BIOS  ] Firmware waking vector 0xff00cc
+00001400765i[PCI   ] i440FX PMC write to PAM register 59 (TLB Flush)
+00001401488i[BIOS  ] bios_table_cur_addr: 0x000fa6c4
+00001529105i[VBIOS ] VGABios $Id: vgabios.c,v 1.76 2013/02/10 08:07:03 vruppert Exp $
+00001529176i[BXVGA ] VBE known Display Interface b0c0
+00001529208i[BXVGA ] VBE known Display Interface b0c5
+00001532133i[VBIOS ] VBE Bios $Id: vbe.c,v 1.65 2014/07/08 18:02:25 vruppert Exp $
+00003039092i[XGUI  ] charmap update. Font Height is 16
+00014040191i[BIOS  ] Booting from 0000:7c00
+00030443886i[FLOPPY] partial read() on floppy image returns 384/512
+00030488330i[FLOPPY] read() on floppy image returns 0
+00030532774i[FLOPPY] read() on floppy image returns 0
+00030577218i[FLOPPY] read() on floppy image returns 0
+00030621662i[FLOPPY] read() on floppy image returns 0
+00030666106i[FLOPPY] read() on floppy image returns 0
+00030710550i[FLOPPY] read() on floppy image returns 0
+00030754994i[FLOPPY] read() on floppy image returns 0
+00030799438i[FLOPPY] read() on floppy image returns 0
+00030845636i[FLOPPY] read() on floppy image returns 0
+00030890080i[FLOPPY] read() on floppy image returns 0
+00030934524i[FLOPPY] read() on floppy image returns 0
+00030978968i[FLOPPY] read() on floppy image returns 0
+00031023412i[FLOPPY] read() on floppy image returns 0
+00031067856i[FLOPPY] read() on floppy image returns 0
+00031112300i[FLOPPY] read() on floppy image returns 0
+00031268273i[GDBST ] found breakpoint at 11447
+00031268273i[GDBST ] stopped with ac1
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] reg 8 set to 0000000000011447
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] reg 41 set to 00000000ffffffff
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] Removing breakpoint at 0000000000011447
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000018f80 len 40
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000000103c0 len 40
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000000103c2 len 8
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000018fc0 len 40
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000011440 len 40
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000019048 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130fe0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130fe4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130fe8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130fec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130ff0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130ff4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130ff8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130ffc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000019048 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130fe0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130fe4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130fe8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130fec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130ff0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130ff4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130ff8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130ffc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131000 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131004 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131008 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013100c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000019048 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130fe0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130fe4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130fe8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130fec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130ff0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130ff4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130ff8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130ffc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131000 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131004 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131008 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013100c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131010 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131014 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131018 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013101c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000019048 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130fe0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130fe4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130fe8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130fec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130ff0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130ff4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130ff8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000130ffc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131000 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131004 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131008 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013100c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131010 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131014 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131018 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013101c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131020 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131024 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131028 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013102c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131030 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131034 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131038 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013103c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131040 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131044 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131048 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013104c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131050 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131054 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131058 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013105c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131060 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131064 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131068 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013106c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131070 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131074 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131078 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013107c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131080 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131084 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131088 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013108c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131090 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131094 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131098 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013109c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310a0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310a4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310a8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310ac len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310b0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310b4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310b8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310bc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310c0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310c4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310c8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310cc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310d0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310d4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310d8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310dc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310e0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310e4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310e8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310ec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310f0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310f4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310f8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001310fc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131100 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131104 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131108 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013110c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131110 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131114 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131118 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013111c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131120 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131124 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131128 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013112c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131130 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131134 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131138 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013113c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131140 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131144 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131148 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013114c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131150 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131154 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131158 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013115c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131160 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131164 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131168 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013116c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131170 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131174 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131178 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013117c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131180 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131184 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131188 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013118c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131190 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131194 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131198 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013119c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311a0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311a4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311a8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311ac len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311b0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311b4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311b8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311bc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311c0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311c4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311c8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311cc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311d0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311d4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311d8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311dc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311e0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311e4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311e8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311ec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311f0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311f4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311f8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001311fc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131200 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131204 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131208 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013120c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131210 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131214 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131218 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013121c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131220 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131224 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131228 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013122c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131230 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131234 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131238 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013123c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131240 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131244 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131248 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013124c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131250 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131254 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131258 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013125c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131260 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131264 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131268 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013126c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131270 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131274 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131278 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013127c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131280 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131284 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131288 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013128c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131290 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131294 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131298 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013129c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312a0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312a4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312a8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312ac len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312b0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312b4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312b8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312bc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312c0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312c4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312c8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312cc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312d0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312d4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312d8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312dc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312e0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312e4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312e8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312ec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312f0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312f4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312f8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001312fc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131300 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131304 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131308 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013130c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131310 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131314 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131318 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013131c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131320 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131324 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131328 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013132c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131330 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131334 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131338 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013133c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131340 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131344 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131348 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013134c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131350 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131354 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131358 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013135c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131360 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131364 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131368 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013136c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131370 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131374 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131378 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013137c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131380 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131384 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131388 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013138c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131390 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131394 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131398 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013139c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313a0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313a4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313a8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313ac len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313b0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313b4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313b8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313bc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313c0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313c4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313c8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313cc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313d0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313d4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313d8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313dc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313e0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313e4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313e8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313ec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313f0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313f4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313f8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001313fc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131400 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131404 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131408 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013140c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131410 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131414 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131418 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013141c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131420 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131424 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131428 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013142c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131430 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131434 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131438 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013143c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131440 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131444 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131448 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013144c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131450 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131454 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131458 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013145c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131460 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131464 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131468 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013146c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131470 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131474 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131478 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013147c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131480 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131484 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131488 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013148c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131490 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131494 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131498 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013149c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314a0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314a4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314a8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314ac len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314b0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314b4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314b8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314bc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314c0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314c4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314c8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314cc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314d0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314d4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314d8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314dc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314e0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314e4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314e8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314ec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314f0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314f4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314f8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001314fc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131500 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131504 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131508 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013150c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131510 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131514 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131518 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013151c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131520 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131524 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131528 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013152c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131530 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131534 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131538 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013153c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131540 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131544 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131548 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013154c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131550 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131554 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131558 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013155c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131560 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131564 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131568 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013156c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131570 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131574 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131578 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013157c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131580 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131584 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131588 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013158c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131590 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131594 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131598 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013159c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315a0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315a4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315a8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315ac len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315b0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315b4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315b8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315bc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315c0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315c4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315c8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315cc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315d0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315d4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315d8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315dc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315e0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315e4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315e8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315ec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315f0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315f4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315f8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001315fc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131600 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131604 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131608 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013160c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131610 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131614 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131618 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013161c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131620 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131624 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131628 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013162c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131630 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131634 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131638 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013163c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131640 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131644 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131648 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013164c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131650 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131654 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131658 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013165c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131660 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131664 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131668 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013166c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131670 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131674 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131678 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013167c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131680 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131684 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131688 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013168c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131690 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131694 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131698 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013169c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316a0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316a4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316a8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316ac len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316b0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316b4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316b8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316bc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316c0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316c4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316c8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316cc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316d0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316d4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316d8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316dc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316e0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316e4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316e8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316ec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316f0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316f4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316f8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001316fc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131700 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131704 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131708 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013170c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131710 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131714 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131718 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013171c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131720 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131724 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131728 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013172c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131730 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131734 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131738 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013173c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131740 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131744 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131748 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013174c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131750 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131754 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131758 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013175c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131760 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131764 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131768 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013176c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131770 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131774 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131778 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013177c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131780 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131784 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131788 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013178c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131790 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131794 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131798 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013179c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317a0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317a4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317a8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317ac len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317b0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317b4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317b8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317bc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317c0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317c4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317c8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317cc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317d0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317d4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317d8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317dc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317e0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317e4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317e8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317ec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317f0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317f4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317f8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001317fc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131800 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131804 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131808 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013180c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131810 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131814 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131818 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013181c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131820 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131824 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131828 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013182c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131830 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131834 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131838 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013183c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131840 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131844 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131848 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013184c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131850 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131854 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131858 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013185c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131860 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131864 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131868 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013186c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131870 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131874 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131878 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013187c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131880 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131884 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131888 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013188c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131890 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131894 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131898 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013189c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318a0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318a4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318a8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318ac len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318b0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318b4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318b8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318bc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318c0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318c4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318c8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318cc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318d0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318d4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318d8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318dc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318e0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318e4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318e8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318ec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318f0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318f4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318f8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001318fc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131900 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131904 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131908 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013190c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131910 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131914 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131918 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013191c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131920 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131924 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131928 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013192c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131930 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131934 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131938 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013193c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131940 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131944 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131948 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013194c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131950 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131954 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131958 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013195c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131960 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131964 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131968 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013196c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131970 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131974 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131978 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013197c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131980 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131984 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131988 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013198c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131990 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131994 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131998 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 000000000013199c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319a0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319a4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319a8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319ac len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319b0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319b4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319b8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319bc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319c0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319c4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319c8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319cc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319d0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319d4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319d8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319dc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319e0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319e4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319e8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319ec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319f0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319f4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319f8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 00000000001319fc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a00 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a04 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a08 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a0c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a10 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a14 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a18 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a1c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a20 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a24 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a28 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a2c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a30 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a34 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a38 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a3c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a40 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a44 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a48 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a4c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a50 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a54 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a58 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a5c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a60 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a64 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a68 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a6c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a70 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a74 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a78 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a7c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a80 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a84 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a88 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a8c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a90 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a94 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a98 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131a9c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131aa0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131aa4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131aa8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131aac len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ab0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ab4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ab8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131abc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ac0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ac4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ac8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131acc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ad0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ad4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ad8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131adc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ae0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ae4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ae8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131aec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131af0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131af4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131af8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131afc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b00 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b04 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b08 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b0c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b10 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b14 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b18 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b1c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b20 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b24 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b28 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b2c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b30 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b34 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b38 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b3c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b40 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b44 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b48 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b4c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b50 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b54 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b58 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b5c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b60 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b64 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b68 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b6c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b70 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b74 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b78 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b7c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b80 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b84 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b88 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b8c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b90 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b94 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b98 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131b9c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ba0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ba4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ba8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bac len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bb0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bb4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bb8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bbc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bc0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bc4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bc8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bcc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bd0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bd4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bd8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bdc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131be0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131be4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131be8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bf0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bf4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bf8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131bfc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c00 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c04 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c08 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c0c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c10 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c14 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c18 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c1c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c20 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c24 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c28 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c2c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c30 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c34 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c38 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c3c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c40 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c44 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c48 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c4c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c50 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c54 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c58 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c5c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c60 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c64 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c68 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c6c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c70 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c74 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c78 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c7c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c80 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c84 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c88 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c8c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c90 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c94 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c98 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131c9c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ca0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ca4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ca8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131cac len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131cb0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131cb4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131cb8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131cbc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131cc0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131cc4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131cc8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ccc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131cd0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131cd4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131cd8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131cdc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ce0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ce4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ce8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131cec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131cf0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131cf4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131cf8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131cfc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d00 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d04 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d08 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d0c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d10 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d14 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d18 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d1c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d20 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d24 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d28 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d2c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d30 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d34 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d38 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d3c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d40 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d44 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d48 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d4c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d50 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d54 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d58 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d5c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d60 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d64 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d68 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d6c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d70 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d74 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d78 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d7c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d80 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d84 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d88 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d8c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d90 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d94 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d98 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131d9c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131da0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131da4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131da8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131dac len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131db0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131db4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131db8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131dbc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131dc0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131dc4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131dc8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131dcc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131dd0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131dd4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131dd8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ddc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131de0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131de4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131de8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131dec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131df0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131df4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131df8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131dfc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e00 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e04 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e08 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e0c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e10 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e14 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e18 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e1c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e20 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e24 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e28 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e2c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e30 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e34 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e38 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e3c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e40 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e44 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e48 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e4c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e50 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e54 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e58 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e5c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e60 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e64 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e68 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e6c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e70 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e74 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e78 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e7c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e80 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e84 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e88 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e8c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e90 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e94 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e98 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131e9c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ea0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ea4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ea8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131eac len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131eb0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131eb4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131eb8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ebc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ec0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ec4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ec8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ecc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ed0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ed4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ed8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131edc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ee0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ee4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ee8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131eec len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ef0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ef4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131ef8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131efc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f00 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f04 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f08 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f0c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f10 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f14 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f18 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f1c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f20 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f24 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f28 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f2c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f30 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f34 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f38 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f3c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f40 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f44 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f48 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f4c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f50 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f54 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f58 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f5c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f60 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f64 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f68 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f6c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f70 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f74 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f78 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f7c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f80 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f84 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f88 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f8c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f90 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f94 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f98 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131f9c len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131fa0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131fa4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131fa8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131fac len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131fb0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131fb4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131fb8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131fbc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131fc0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131fc4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131fc8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131fcc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131fd0 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131fd4 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131fd8 len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[GDBST ] addr 0000000000131fdc len 4
+00031268273i[XGUI  ] Mouse capture off
+00031268273i[XGUI  ] Mouse capture off
+00031268273p[GDBST ] >>PANIC<< Debugger asked us to quit
+00031268273i[CPU0  ] CPU is in protected mode (active)
+00031268273i[CPU0  ] CS.mode = 32 bit
+00031268273i[CPU0  ] SS.mode = 32 bit
+00031268273i[CPU0  ] EFER   = 0x00000000
+00031268273i[CPU0  ] | EAX=00019048  EBX=00014384  ECX=00130fe0  EDX=00138007
+00031268273i[CPU0  ] | ESP=00018f84  EBP=00018fb8  ESI=00014df0  EDI=00019000
+00031268273i[CPU0  ] | IOPL=0 id vip vif ac vm rf nt of df if tf sf zf AF PF cf
+00031268273i[CPU0  ] | SEG sltr(index|ti|rpl)     base    limit G D
+00031268273i[CPU0  ] |  CS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+00031268273i[CPU0  ] |  DS:0018( 0003| 0|  0) 00000000 ffffffff 1 1
+00031268273i[CPU0  ] |  SS:0018( 0003| 0|  0) 00000000 ffffffff 1 1
+00031268273i[CPU0  ] |  ES:0018( 0003| 0|  0) 00000000 ffffffff 1 1
+00031268273i[CPU0  ] |  FS:0000( 0003| 0|  0) 00000000 ffffffff 1 1
+00031268273i[CPU0  ] |  GS:0000( 0003| 0|  0) 00000000 ffffffff 1 1
+00031268273i[CPU0  ] | EIP=00011447 (00011447)
+00031268273i[CPU0  ] | CR0=0x80000011 CR2=0x00000000
+00031268273i[CPU0  ] | CR3=0x0002d000 CR4=0x00000000
+00031268273i[CPU0  ] 0x00011447>> lea eax, dword ptr ds:[edi+32] : 8D4720
+00031268273i[CMOS  ] Last time is 1733853193 (Tue Dec 10 18:53:13 2024)
+00031268273i[XGUI  ] Exit
+00031268273i[      ] restoring default signal behavior
+00031268273i[SIM   ] quit_sim called with exit code 1

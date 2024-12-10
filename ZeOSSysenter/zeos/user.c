@@ -27,9 +27,8 @@ void put_hex(unsigned long num)
 }
 
 
-void hola(void* i)
+void hola(int i)
 {
-    int value = (*(int*)i);
     write(1,"hola",i);
 }
 
@@ -156,8 +155,38 @@ Sprite marcoSprite = {
   int x = 4;
   int y = 11;
   
-  threadCreate(hola,&i);
+  threadCreate(hola,i);
   //write(1,"hola",4);
+
+  char *buffer = "      ";
+  int a = 2;
+  semCreate(1);
+  int ret = fork();
+  
+  /*
+  if (ret == 0) 
+  {
+    //hijo
+    semWait(0);
+    ++a;
+    itoa(a,buffer);
+    write(1,buffer,6);
+    semSignal(0);
+
+  }
+  else
+  {
+    //padre
+    semWait(0);
+    ++a;
+    itoa(a,buffer);
+    write(1,buffer,6);
+    semSignal(0);
+  }
+  semDestroy(0);
+  */
+
+
   while(1)
   {
 

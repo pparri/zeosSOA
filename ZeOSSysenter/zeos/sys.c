@@ -164,31 +164,39 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
 
 
     //Alloc user stack in current
-    unsigned long stack_base = (unsigned long)sys_sbrk(sizeof(struct task_struct) + PAGE_SIZE);
+    unsigned long stack_base = (unsigned long)sys_sbrk(PAGE_SIZE);
     if (stack_base == (unsigned long)NULL) {
       //si nos devuelve error, lo devolvemos a la freequeue
         list_add_tail(lhcurrent, &freequeue);
         return -ENOMEM;
     }
-    uchild->task.ustack = (unsigned long*) stack_base + sizeof(struct task_struct);
-    
+
+    uchild->task.ustack = (unsigned long*)(stack_base+PAGE_SIZE); 
+       
 
     //Init user stack (frame activation)
-    
-    uchild->task.ustack[KERNEL_STACK_SIZE-2] = (unsigned long)0;
-    uchild->task.ustack[KERNEL_STACK_SIZE-1] = (unsigned long)parameter;
+    /*
+    uchild->task.ustack -= Dword):
+    *(DWord*)uchild->task.ustack = (unsigned long)0;
+    uchild->task.ustack--;    
+    *(DWord*)uchild->task.ustack = (unsigned long)parameter;
+    */
+    uchild->task.ustack-=sizeof(DWord);
+    *(DWord*)(uchild->task.ustack)=(DWord)parameter;
+    uchild->task.ustack-=sizeof(DWord);
+    *(DWord*)(uchild->task.ustack)=(DWord)0;
 
     //ctx eje
     uchild->stack[KERNEL_STACK_SIZE-5] = (unsigned long)function; //eip
-    uchild->task.register_esp = (int) &uchild->task.ustack[KERNEL_STACK_SIZE-2];
-    uchild->stack[KERNEL_STACK_SIZE-2] = (unsigned long) &uchild->task.ustack[KERNEL_STACK_SIZE-2];
+    uchild->task.register_esp = (int)uchild->task.ustack;
+    uchild->stack[KERNEL_STACK_SIZE-2] = (unsigned long)&uchild->task.ustack;
 
     init_stats(&(uchild->task.p_stats));
 
     //RQ
     list_add_tail(&(uchild->task.list), &readyqueue);
 
-    //printk("hey");
+    printk("hey");
     return uchild->task.TID;
 } 
 
@@ -423,19 +431,19 @@ int sys_semCreate(int value) {
     semafors[i].count = value;
     semafors[i].TID = current()->PID; //tid del thread que lo ha creado
     INIT_LIST_HEAD(&semafors[i].blocked);
-    printk("creado");
-    return i+1;
+    //printk("creado");
+    return i;
   }
-
   return -1;
  }
 }
+
 int sys_semWait(int semID) {
   if (semID > 10 || semID < 0) return -1;
   if (semafors[semID].semid != semID) return -1;
   semafors[semID].count--;
   if (semafors[semID].count < 0) {
-    printk("bloqueamos\n");
+    //printk("bloqueamos\n");
     list_add(&current()->list,&semafors[semID].blocked);
     sched_next_rr();
   }
@@ -444,7 +452,7 @@ int sys_semWait(int semID) {
 
 int sys_semSignal(int semID) {
  if (semID > 10 || semID < 0) return -1;
-  printk("desbloqueamos\n");
+  //printk("desbloqueamos\n");
   if (semafors[semID].semid != semID) return -1;
   semafors[semID].count++;
   if (semafors[semID].count <= 0) {
@@ -463,5 +471,4 @@ int sys_semDestroy(int semID) {
     semafors[semID].TID = -1;
     return 1;
   }
-
 }
