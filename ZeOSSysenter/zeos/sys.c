@@ -161,27 +161,27 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
     uchild->task.PID = current()->PID;
     uchild->task.state = ST_READY;
 
-    //Alloc user stack
-    /*
-    page_table_entry *child_PT = get_PT(&uchild->task);
-    int new_ph_pag = alloc_frame();
-    if (new_ph_pag == -1) return -ENOMEM; 
-    set_ss_pag(child_PT,0, new_ph_pag);
-    */
 
-    //Alloc tls
+
+    //Alloc user stack in current
+    unsigned long stack_base = (unsigned long)sys_sbrk(sizeof(struct task_struct) + PAGE_SIZE);
+    if (stack_base == (unsigned long)NULL) {
+      //si nos devuelve error, lo devolvemos a la freequeue
+        list_add_tail(lhcurrent, &freequeue);
+        return -ENOMEM;
+    }
+    uchild->task.ustack = (unsigned long*) stack_base + sizeof(struct task_struct);
+    
 
     //Init user stack (frame activation)
-    unsigned long st[KERNEL_STACK_SIZE];
-    st[KERNEL_STACK_SIZE-3] = 0;
-    st[KERNEL_STACK_SIZE-2] = function;
-    st[KERNEL_STACK_SIZE-1] = parameter;
-    uchild->task.ustack = st;
+    
+    uchild->task.ustack[KERNEL_STACK_SIZE-2] = (unsigned long)0;
+    uchild->task.ustack[KERNEL_STACK_SIZE-1] = (unsigned long)parameter;
 
     //ctx eje
-    uchild->stack[KERNEL_STACK_SIZE-5] = function;
-    uchild->task.register_esp = &uchild->task.ustack[KERNEL_STACK_SIZE-3];
-    uchild->stack[KERNEL_STACK_SIZE-2] = &uchild->task.ustack[KERNEL_STACK_SIZE-3];
+    uchild->stack[KERNEL_STACK_SIZE-5] = (unsigned long)function; //eip
+    uchild->task.register_esp = (int) &uchild->task.ustack[KERNEL_STACK_SIZE-2];
+    uchild->stack[KERNEL_STACK_SIZE-2] = (unsigned long) &uchild->task.ustack[KERNEL_STACK_SIZE-2];
 
     init_stats(&(uchild->task.p_stats));
 
@@ -197,12 +197,8 @@ void sys_threadExit(void)
     struct task_struct *current_task = current();
     page_table_entry *PT = get_PT(current_task);    //TP del thread --> proceso
 
-    //heap del hilo
-    while (current_task->heap_pointer_proc > current_task->heap_start_proc) {
-        free_frame(get_frame(PT, (unsigned long)current_task->heap_pointer_proc / PAGE_SIZE));
-        del_ss_pag(PT, (unsigned long)current_task->heap_pointer_proc / PAGE_SIZE);
-        current_task->heap_pointer_proc -= PAGE_SIZE;
-    }
+    char *heap_pointer = (char *)current_task->register_esp - PAGE_SIZE;
+    sys_sbrk(-PAGE_SIZE);
     list_add_tail(&(current_task->list), &freequeue);
 
     sched_next_rr();

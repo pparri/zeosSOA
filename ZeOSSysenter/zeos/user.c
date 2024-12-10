@@ -26,12 +26,13 @@ void put_hex(unsigned long num)
     }
 }
 
-/*
-void hola(int i)
+
+void hola(void* i)
 {
+    int value = (*(int*)i);
     write(1,"hola",i);
 }
-*/
+
 
 int __attribute__ ((__section__(".text.main")))
   main(void)
@@ -149,15 +150,17 @@ Sprite marcoSprite = {
 //spritePut(0, 0, &marcoSprite);
 
   int i = 4;
-  //threadCreate(hola,&i);
   //threadExit();
 
   char *b;
   int x = 4;
   int y = 11;
   
+  threadCreate(hola,&i);
+  //write(1,"hola",4);
   while(1)
   {
+
     /*
     gotoXY(x,y);
     //gotoXY((++x)%25,(++y)%80);

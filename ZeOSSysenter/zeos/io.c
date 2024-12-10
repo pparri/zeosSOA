@@ -98,7 +98,7 @@ int spriteDraw(int posX, int posY, Sprite *sp)
     for (int row = 0; row < sp->x; ++row) {
         for (int col = 0; col < sp->y; ++col) 
         {
-          //if (sp->content[row * sp->y + col] == NULL) return -EFAULT;
+          if ((row*sp->y + col) > (sp->x*sp->y)||sp->content[row * sp->y + col] == NULL) return -EFAULT;
           int xPos = posX + col;
           int yPos = posY + row;
           printc_xy(xPos, yPos, sp->content[row * sp->y + col]);
