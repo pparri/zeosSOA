@@ -170,34 +170,6 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
     */
 
     //Alloc tls
-    /* Copy parent's SYSTEM and CODE to child. */
-    page_table_entry *process_PT = get_PT(&uchild->task);
-    page_table_entry *parent_PT = get_PT(current());
-    int pag, i;
-    for (pag=0; pag<NUM_PAG_KERNEL; pag++)
-    {
-      set_ss_pag(process_PT, pag, get_frame(parent_PT, pag));
-    }
-    for (pag=0; pag<NUM_PAG_CODE; pag++)
-    {
-      set_ss_pag(process_PT, PAG_LOG_INIT_CODE+pag, get_frame(parent_PT, PAG_LOG_INIT_CODE+pag));
-    }
-    
-
-    //Copiar datos del heap: Copia directa datos
-    //regiones paginas para la Tp del padre
-    int pagRegionIni = NUM_PAG_KERNEL+NUM_PAG_CODE;
-    int pagRegionFin = NUM_PAG_KERNEL+NUM_PAG_CODE + NUM_PAG_DATA;
-    char *pointer_current_start = current()->heap_start_proc;
-    while (pointer_current_start < current()->heap_pointer_proc) {  //copiamos hasta donde llegue el heap
-        for (i = pagRegionIni; i < pagRegionFin && pointer_current_start < current()->heap_pointer_proc; i++) {
-          unsigned int ph_page = get_frame(parent_PT,(int)pointer_current_start/PAGE_SIZE); //cogemos el frame del padre
-          set_ss_pag(process_PT,i+NUM_PAG_DATA, ph_page);  //asociamos con la TP del hijo
-          copy_data((void*) (i << 12), (void*) ((i+NUM_PAG_DATA)<<12), PAGE_SIZE);
-          del_ss_pag(parent_PT, i+NUM_PAG_DATA);
-          pointer_current_start += PAGE_SIZE;
-        }
-    }
 
     //Init user stack (frame activation)
     unsigned long st[KERNEL_STACK_SIZE];
@@ -223,7 +195,7 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
 void sys_threadExit(void) 
 {
     struct task_struct *current_task = current();
-    page_table_entry *PT = get_PT(current_task);
+    page_table_entry *PT = get_PT(current_task);    //TP del thread --> proceso
 
     //heap del hilo
     while (current_task->heap_pointer_proc > current_task->heap_start_proc) {
