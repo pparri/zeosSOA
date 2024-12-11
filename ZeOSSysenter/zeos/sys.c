@@ -145,8 +145,11 @@ int sys_spritePut(int posX, int posY, Sprite* sp)
 
 int global_TID=1000;
 
+
 int sys_threadCreate(void (*function)(void*), void* parameter) 
 {
+    if (!access_ok(VERIFY_READ, function, sizeof(void*), NULL)) return -EFAULT;
+    if (!access_ok(VERIFY_READ, parameter, sizeof(void*), NULL)) return -EFAULT;
     if (list_empty(&freequeue)) return -ENOMEM;
 
 
@@ -154,6 +157,7 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
     list_del(lhcurrent);
 
     //Alloc tcb
+
     union task_union *uchild = (union task_union *)list_head_to_task_struct(lhcurrent);
     
     //init tcb
@@ -165,32 +169,43 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
     uchild->task.state = ST_READY;
 
     //Alloc user stack in current
-    unsigned long stack_base = (unsigned long)sys_sbrk(PAGE_SIZE);
+    unsigned long stack_base = (unsigned long)sys_sbrk(4096);
     if (stack_base == (unsigned long)NULL) {
       //si nos devuelve error, lo devolvemos a la freequeue
+        sys_sbrk(-4096); 
         list_add_tail(lhcurrent, &freequeue);
         return -ENOMEM;
     }
-    uchild->task.ustack = (unsigned long*) stack_base;
+    uchild->task.ustack = (unsigned long) sys_sbrk(0);
     
 
+
     //Init user stack (frame activation)
-    uchild->task.ustack[KERNEL_STACK_SIZE-2] = (unsigned long)0;
-    uchild->task.ustack[KERNEL_STACK_SIZE-1] = (unsigned long)parameter;
+    unsigned long * user = uchild->task.ustack;
+    user -= sizeof(unsigned long);
+    *user = (unsigned long)parameter;
+    user -= sizeof(unsigned long);
+    *user = (unsigned long)0;
+    uchild->task.ustack = user;
 
     //ctx eje
-    uchild->stack[KERNEL_STACK_SIZE-5] = (unsigned long)&function; //eip
-    uchild->task.register_esp = (int) &uchild->task.ustack[KERNEL_STACK_SIZE-2];
-    uchild->stack[KERNEL_STACK_SIZE-2] = (unsigned long) &uchild->task.ustack[KERNEL_STACK_SIZE-2];
+
+    int register_ebp = (int) get_ebp();
+    uchild->stack[KERNEL_STACK_SIZE-5] = (unsigned long)function; //eip
+    uchild->task.register_esp = (int) register_ebp;
+    uchild->stack[KERNEL_STACK_SIZE-2] = (unsigned long) uchild->task.ustack;
+
 
     init_stats(&(uchild->task.p_stats));
 
     //RQ
     list_add_tail(&(uchild->task.list), &readyqueue);
 
-    //printk("hey");
+    printk("hey");
+    task_switch(uchild);
     return uchild->task.TID;
-} 
+
+}
 
 void sys_threadExit(void) 
 {
@@ -423,19 +438,19 @@ int sys_semCreate(int value) {
     semafors[i].count = value;
     semafors[i].TID = current()->PID; //tid del thread que lo ha creado
     INIT_LIST_HEAD(&semafors[i].blocked);
-    printk("creado");
-    return i+1;
+    //printk("creado");
+    return i;
   }
-
   return -1;
  }
 }
+
 int sys_semWait(int semID) {
   if (semID > 10 || semID < 0) return -1;
   if (semafors[semID].semid != semID) return -1;
   semafors[semID].count--;
   if (semafors[semID].count < 0) {
-    printk("bloqueamos\n");
+    //printk("bloqueamos\n");
     list_add(&current()->list,&semafors[semID].blocked);
     sched_next_rr();
   }
@@ -444,7 +459,7 @@ int sys_semWait(int semID) {
 
 int sys_semSignal(int semID) {
  if (semID > 10 || semID < 0) return -1;
-  printk("desbloqueamos\n");
+  //printk("desbloqueamos\n");
   if (semafors[semID].semid != semID) return -1;
   semafors[semID].count++;
   if (semafors[semID].count <= 0) {
@@ -463,5 +478,4 @@ int sys_semDestroy(int semID) {
     semafors[semID].TID = -1;
     return 1;
   }
-
 }

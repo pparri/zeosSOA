@@ -61,7 +61,7 @@ int copy_to_user(void *start, void *dest, int size)
  * Returns true (nonzero) if the memory block may be valid,
  *         false (zero) if it is definitely invalid
  */
-int access_ok(int type, const void * addr, unsigned long size, struct task_struct *task)
+int access_ok(int type, const void * addr, unsigned long size, struct task_struct *t  ask)
 {
   unsigned long addr_ini, addr_fin;
 
