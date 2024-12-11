@@ -149,37 +149,37 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
 {
     if (list_empty(&freequeue)) return -ENOMEM;
 
+
     struct list_head *lhcurrent = list_first(&freequeue);
     list_del(lhcurrent);
 
     //Alloc tcb
     union task_union *uchild = (union task_union *)list_head_to_task_struct(lhcurrent);
+    
     //init tcb
     copy_data(current(), uchild, sizeof(union task_union));
+    
     //TID + others
     uchild->task.TID = ++global_TID;
     uchild->task.PID = current()->PID;
     uchild->task.state = ST_READY;
 
-
-
     //Alloc user stack in current
-    unsigned long stack_base = (unsigned long)sys_sbrk(sizeof(struct task_struct) + PAGE_SIZE);
+    unsigned long stack_base = (unsigned long)sys_sbrk(PAGE_SIZE);
     if (stack_base == (unsigned long)NULL) {
       //si nos devuelve error, lo devolvemos a la freequeue
         list_add_tail(lhcurrent, &freequeue);
         return -ENOMEM;
     }
-    uchild->task.ustack = (unsigned long*) stack_base + sizeof(struct task_struct);
+    uchild->task.ustack = (unsigned long*) stack_base;
     
 
     //Init user stack (frame activation)
-    
     uchild->task.ustack[KERNEL_STACK_SIZE-2] = (unsigned long)0;
     uchild->task.ustack[KERNEL_STACK_SIZE-1] = (unsigned long)parameter;
 
     //ctx eje
-    uchild->stack[KERNEL_STACK_SIZE-5] = (unsigned long)function; //eip
+    uchild->stack[KERNEL_STACK_SIZE-5] = (unsigned long)&function; //eip
     uchild->task.register_esp = (int) &uchild->task.ustack[KERNEL_STACK_SIZE-2];
     uchild->stack[KERNEL_STACK_SIZE-2] = (unsigned long) &uchild->task.ustack[KERNEL_STACK_SIZE-2];
 

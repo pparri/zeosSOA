@@ -28,7 +28,7 @@ struct task_struct {
   char* heap_start_proc;
   char* heap_end_proc;
   char *heap_pointer_proc;
-  unsigned long *ustack;
+  unsigned long *ustack; /* user stack */
 };
 
 union task_union {
