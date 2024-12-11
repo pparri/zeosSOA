@@ -543,6 +543,7 @@ for (int xa = 2; xa < 21; xa+=4)
         ybullet = ybullet-3;
     }
     
+    /* ALIENS */
     for (int i = 0; i < ALIEN_COUNT; ++i)
     {
         if (aliensArray[i] == ycannon)
@@ -560,11 +561,12 @@ for (int xa = 2; xa < 21; xa+=4)
             aliensArray[i] = -1;
             ++score;
             gotoXY(22,yscore);
+            ++yscore;
             write(1,'+',1);
         }
     }
 
-    if (score == 45) 
+    if (score == ALIEN_COUNT) 
     {
         while(1)
         {
