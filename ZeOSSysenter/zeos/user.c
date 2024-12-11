@@ -143,11 +143,11 @@ Sprite marcoSprite = {
     .y = 80,
     .content = spriteContent
 };
+
+
+SetColor(1,5);
+spritePut(0, 0, &marcoSprite);
 */
-
-//SetColor(1,5);
-//spritePut(0, 0, &marcoSprite);
-
   int i = 4;
   //threadExit();
 

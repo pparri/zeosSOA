@@ -161,8 +161,6 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
     uchild->task.PID = current()->PID;
     uchild->task.state = ST_READY;
 
-
-
     //Alloc user stack in current
     unsigned long stack_base = (unsigned long)sys_sbrk(PAGE_SIZE);
     if (stack_base == (unsigned long)NULL) {
@@ -170,26 +168,28 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
         list_add_tail(lhcurrent, &freequeue);
         return -ENOMEM;
     }
-
-    uchild->task.ustack = (unsigned long*)(stack_base+PAGE_SIZE); 
-       
+    unsigned long *stack_ptr = (unsigned long*)(stack_base+PAGE_SIZE);    
 
     //Init user stack (frame activation)
-    /*
-    uchild->task.ustack -= Dword):
-    *(DWord*)uchild->task.ustack = (unsigned long)0;
-    uchild->task.ustack--;    
-    *(DWord*)uchild->task.ustack = (unsigned long)parameter;
-    */
-    uchild->task.ustack-=sizeof(DWord);
-    *(DWord*)(uchild->task.ustack)=(DWord)parameter;
-    uchild->task.ustack-=sizeof(DWord);
-    *(DWord*)(uchild->task.ustack)=(DWord)0;
+    stack_ptr-=sizeof(DWord);
+    *stack_ptr = parameter;
+    stack_ptr-=sizeof(DWord);
+    *st[KERNEL_STACK_SIZE-2]ild->task.ustack = stack_ptr;
 
     //ctx eje
-    uchild->stack[KERNEL_STACK_SIZE-5] = (unsigned long)function; //eip
-    uchild->task.register_esp = (int)uchild->task.ustack;
-    uchild->stack[KERNEL_STACK_SIZE-2] = (unsigned long)&uchild->task.ustack;
+    int register_ebp;		/* frame pointer */
+    /* Map Parent's ebp to child's stack */
+    register_ebp = (int) get_ebp();
+    register_ebp=(register_ebp - (int)current()) + (int)(uchild);
+
+    uchild->task.register_esp=register_ebp + sizeof(DWord);
+
+    DWord temp_ebp=*(DWord*)register_ebp;
+    /* Prepare child stack for context switch */
+    uchild->task.register_esp-=sizeof(DWord);
+    *(DWord*)(uchild->task.register_esp)=(DWord)&function;
+    uchild->task.register_esp-=sizeof(DWord);
+    *(DWord*)(uchild->task.register_esp)=temp_ebp;
 
     init_stats(&(uchild->task.p_stats));
 
@@ -198,6 +198,42 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
 
     printk("hey");
     return uchild->task.TID;
+
+    /*
+    //Alloc user stack in current
+    unsigned long stack_base = (unsigned long)sys_sbrk(PAGE_SIZE);
+    if (stack_base == (unsigned long)NULL) {
+      //si nos devuelve error, lo devolvemos a la freequeue
+        list_add_tail(lhcurrent, &freequeue);
+        return -ENOMEM;
+    }
+    unsigned long *stack_ptr = (unsigned long *)(stack_base + PAGE_SIZE);
+
+    // Escribir '0' en la dirección más alta de la pila
+    stack_ptr--; // Baja una posición (dirección más baja)
+    *stack_ptr = 0;
+
+    // Escribir 'parameter' en la dirección justo debajo
+    stack_ptr--; // Baja otra posición
+    *stack_ptr = parameter;
+
+    // Actualizar el puntero de pila para que apunte al nuevo tope
+    uchild->task.ustack = stack_ptr;
+
+
+    //ctx eje
+    uchild->stack[KERNEL_STACK_SIZE-5] = (unsigned long)function; //eip
+    uchild->task.register_esp = (int)uchild->task.ustack[KERNEL_STACK_SIZE-2];
+    uchild->stack[KERNEL_STACK_SIZE-2] = (unsigned long)&uchild->task.ustack[KERNEL_STACK_SIZE-2];
+
+    init_stats(&(uchild->task.p_stats));
+
+    //RQ
+    list_add_tail(&(uchild->task.list), &readyqueue);
+
+    printk("hey");
+    return uchild->task.TID;
+    */
 } 
 
 void sys_threadExit(void) 
