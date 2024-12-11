@@ -148,8 +148,8 @@ int global_TID=1000;
 
 int sys_threadCreate(void (*function)(void*), void* parameter) 
 {
-    if (!access_ok(VERIFY_READ, function, sizeof(void*), NULL)) return -EFAULT;
-    if (!access_ok(VERIFY_READ, parameter, sizeof(void*), NULL)) return -EFAULT;
+    //if (!access_ok(VERIFY_READ, function, sizeof(void*), NULL)) return -EFAULT;
+    //if (!access_ok(VERIFY_READ, parameter, sizeof(void*), NULL)) return -EFAULT;
     if (list_empty(&freequeue)) return -ENOMEM;
 
 
@@ -176,25 +176,32 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
         list_add_tail(lhcurrent, &freequeue);
         return -ENOMEM;
     }
-    uchild->task.ustack = (unsigned long) sys_sbrk(0);
     
+    // Configurar el stack de usuario
+    uchild->task.ustack = sys_sbrk(0);
+    
+    // Preparar el stack de usuario con los argumentos
+    unsigned long *user = (unsigned long *)uchild->task.ustack;
+    user --;
+    *user = (void*) parameter;
+    user--;
+    *user = (unsigned long) 0;
+    
+    uchild->task.ustack = (unsigned long)user;
 
-
-    //Init user stack (frame activation)
-    unsigned long * user = uchild->task.ustack;
-    user -= sizeof(unsigned long);
-    *user = (unsigned long)parameter;
-    user -= sizeof(unsigned long);
-    *user = (unsigned long)0;
-    uchild->task.ustack = user;
-
-    //ctx eje
-
-    int register_ebp = (int) get_ebp();
-    uchild->stack[KERNEL_STACK_SIZE-5] = (unsigned long)function; //eip
-    uchild->task.register_esp = (int) register_ebp;
-    uchild->stack[KERNEL_STACK_SIZE-2] = (unsigned long) uchild->task.ustack;
-
+    // Configurar el contexto de kernel
+    unsigned long *kernel_stack = (unsigned long *)&uchild->stack[KERNEL_STACK_SIZE];
+    
+    kernel_stack--;
+    *kernel_stack = (unsigned long)function; //recuperamos eip
+    kernel_stack--;
+    *kernel_stack = (unsigned long)user;  //recuperamos esp 
+    /* System Stack */
+    /* 
+      user (esp) --> apunta al top de la pila de usuario
+      function (eip)
+    */
+    uchild->task.register_esp = (int)kernel_stack;
 
     init_stats(&(uchild->task.p_stats));
 
@@ -202,7 +209,6 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
     list_add_tail(&(uchild->task.list), &readyqueue);
 
     printk("hey");
-    task_switch(uchild);
     return uchild->task.TID;
 
 }
@@ -210,10 +216,9 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
 void sys_threadExit(void) 
 {
     struct task_struct *current_task = current();
-    page_table_entry *PT = get_PT(current_task);    //TP del thread --> proceso
-
-    char *heap_pointer = (char *)current_task->register_esp - PAGE_SIZE;
+    //Liberamos stack usuario
     sys_sbrk(-PAGE_SIZE);
+    current_task->TID = -1; //marcar invalido?
     list_add_tail(&(current_task->list), &freequeue);
 
     sched_next_rr();

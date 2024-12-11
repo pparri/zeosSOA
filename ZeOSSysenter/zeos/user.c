@@ -27,10 +27,11 @@ void put_hex(unsigned long num)
 }
 
 
-void hola(int i)
+void hola(void* i)
 {
     write(1,"hola",4);
-    write(1,"hola",i);
+    //write(1,"bien",i);
+    threadExit();
 }
 
 
@@ -150,18 +151,19 @@ SetColor(1,5);
 spritePut(0, 0, &marcoSprite);
 */
   int i = 4;
-  //threadExit();
 
   char *b;
   int x = 4;
   int y = 11;
   
-  threadCreate(hola,i);
+  threadCreate(hola,(void*)i);
   //write(1,"hola",4);
 
+/*
   char *buffer = "      ";
   int a = 2;
   semCreate(1);
+*/
   //int ret = fork();
   
   /*
