@@ -140,7 +140,7 @@ int sys_SetColor(int color, int background)
 
 int sys_spritePut(int posX, int posY, Sprite* sp)
 {
-  return spriteDraw(posX,posY,sp);
+  return spriteDraw(posY,posX,sp);
 }
 
 int global_TID=1000;
@@ -174,7 +174,8 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
     stack_ptr-=sizeof(DWord);
     *stack_ptr = parameter;
     stack_ptr-=sizeof(DWord);
-    *st[KERNEL_STACK_SIZE-2]ild->task.ustack = stack_ptr;
+    *stack_ptr = 0;
+    uchild->task.ustack = stack_ptr;
 
     //ctx eje
     int register_ebp;		/* frame pointer */
@@ -224,7 +225,7 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
     //ctx eje
     uchild->stack[KERNEL_STACK_SIZE-5] = (unsigned long)function; //eip
     uchild->task.register_esp = (int)uchild->task.ustack[KERNEL_STACK_SIZE-2];
-    uchild->stack[KERNEL_STACK_SIZE-2] = (unsigned long)&uchild->task.ustack[KERNEL_STACK_SIZE-2];
+    uchild->stack[KERNEL_STACK_SIZE-2] = (unsigned long)&uchild->task.ustack;
 
     init_stats(&(uchild->task.p_stats));
 
