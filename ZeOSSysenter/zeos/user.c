@@ -31,7 +31,10 @@ void put_hex(unsigned long num)
 
 void hola(void* i)
 {
+
     write(1,"hola",4);
+    int param = (int) i;
+    write(1, "bien", i);
     threadExit();
 }
 
@@ -369,11 +372,11 @@ for (int xa = 2; xa < 21; xa+=4)
   int x = 4;
   int y = 11;
 
+  threadCreate(hola,g);
 /*
   char *buffer = "      ";
   int a = 2;
   
-  threadCreate(hola,&g);
   /*
   if (ret == 0) 
   {
