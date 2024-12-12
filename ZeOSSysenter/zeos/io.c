@@ -53,6 +53,7 @@ void printc(char c)
 
 void printc_xy(Byte mx, Byte my, char c)
 {
+  //printk("printc_xy: Printing");
   Byte cx, cy;
   cx=x;
   cy=y;
@@ -92,8 +93,9 @@ int asthetic_change(int color, int background)
 /* SPRITE */
 int spriteDraw(int posX, int posY, Sprite *sp)
 {
-    if (!access_ok(0, sp, sizeof(Sprite))) return -EINVAL;
-    if ((posX >= NUM_ROWS || posX < 0) || (posY >= NUM_COLUMNS || posY < 0)) return -EINVAL; 
+    if (!access_ok(0, sp, sizeof(Sprite),NULL)) return -EINVAL;
+    //if (!access_ok(0, sp->content, sp->x * sp->y * sizeof(char))) return -EFAULT;
+    if ((posY >= NUM_ROWS || posY < 0) || (posX >= NUM_COLUMNS || posX < 0)) return -EINVAL; 
     else if (sp == NULL || sp->content == NULL) return -EFAULT; 
     else if ((sp->x <= 0 || sp->y <= 0) || (sp->x > NUM_ROWS || sp->y > NUM_COLUMNS)) return -EINVAL;
     for (int row = 0; row < sp->x; ++row) {

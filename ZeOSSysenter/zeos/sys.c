@@ -140,12 +140,80 @@ int sys_SetColor(int color, int background)
 
 int sys_spritePut(int posX, int posY, Sprite* sp)
 {
-  return spriteDraw(posX,posY,sp);
+  return spriteDraw(posY,posX,sp);
 }
 
 int global_TID=1000;
 
+void *wrappersito_func(void(*func) (void* param), void *param)
+{
+  (*func)(param);
+  sys_threadExit();
+}
 
+/*
+int sys_threadCreate(void (*function)(void*), void* parameter) 
+{
+    if (!access_ok(VERIFY_READ, function, sizeof(void*), NULL)) return -EFAULT;
+    if (!access_ok(VERIFY_READ, parameter, sizeof(void*), NULL)) return -EFAULT;
+    if (list_empty(&freequeue)) return -ENOMEM;
+
+
+    struct list_head *lhcurrent = list_first(&freequeue);
+    list_del(lhcurrent);
+
+    //Alloc tcb
+
+    union task_union *uchild = (union task_union *)list_head_to_task_struct(lhcurrent);
+    
+    //init tcb
+    copy_data(current(), uchild, sizeof(union task_union));
+    
+    //TID + others
+    uchild->task.TID = ++global_TID;
+    uchild->task.PID = current()->PID;
+    uchild->task.state = ST_READY;
+
+    //Alloc user stack in current
+    unsigned long stack_base = (unsigned long)sys_sbrk(PAGE_SIZE);
+    if (stack_base == (unsigned long)NULL) 
+    {
+      //si nos devuelve error, lo devolvemos a la freequeue
+      sys_sbrk(-4096); 
+      list_add_tail(lhcurrent, &freequeue);
+      return -ENOMEM;
+    }
+    unsigned long *stack_ptr = sys_sbrk(0); //heap end
+
+    //Init user stack (frame activation)
+    --stack_ptr;
+    *stack_ptr = (void*)parameter;
+    --stack_ptr;
+    *stack_ptr = (unsigned long)function;
+    --stack_ptr;
+    *stack_ptr = (unsigned long)0;
+
+    uchild->task.ustack = (unsigned long)stack_ptr;
+
+    //ctx eje
+    unsigned long *kernel_stack = (unsigned long*)&uchild->stack[KERNEL_STACK_SIZE];
+    --kernel_stack;
+    kernel_stack = (unsigned long)wrappersito_func;
+    --kernel_stack;
+    *(--kernel_stack) = (unsigned long)function;
+
+    uchild->task.register_esp = (int)kernel_stack;
+
+    init_stats(&(uchild->task.p_stats));
+
+    //RQ
+    list_add_tail(&(uchild->task.list), &readyqueue);
+
+    printk("hey");
+    task_switch(uchild);
+    return uchild->task.TID;
+} 
+*/
 int sys_threadCreate(void (*function)(void*), void* parameter) 
 {
     //if (!access_ok(VERIFY_READ, function, sizeof(void*), NULL)) return -EFAULT;
@@ -182,20 +250,35 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
     
     // Preparar el stack de usuario con los argumentos
     unsigned long *user = (unsigned long *)uchild->task.ustack;
-    user --;
-    *user = (void*) parameter;
     user--;
-    *user = (unsigned long) 0;
+    *user = (unsigned long)parameter;
+    user--;
+    *user = (unsigned long)function;
+    user--;
+    *user = (unsigned long)0;
     
     uchild->task.ustack = (unsigned long)user;
 
     // Configurar el contexto de kernel
-    unsigned long *kernel_stack = (unsigned long *)&uchild->stack[KERNEL_STACK_SIZE];
-    
+    unsigned long *kernel_stack = (unsigned long)&uchild->stack[KERNEL_STACK_SIZE];
+    /*
     kernel_stack--;
     *kernel_stack = (unsigned long)function; //recuperamos eip
     kernel_stack--;
     *kernel_stack = (unsigned long)user;  //recuperamos esp 
+    */
+    
+   
+   kernel_stack--; //SS
+   //kernel_stack--; //ESP
+   *kernel_stack = (unsigned long)function;
+   //kernel_stack--; //PSW
+   //kernel_stack--; //CS
+   kernel_stack--; //EIP
+   *kernel_stack = (unsigned long)user;
+   
+   
+
     /* System Stack */
     /* 
       user (esp) --> apunta al top de la pila de usuario
@@ -208,13 +291,16 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
     //RQ
     list_add_tail(&(uchild->task.list), &readyqueue);
 
-    printk("hey");
+    //printk("hey");
+    task_switch(uchild);
     return uchild->task.TID;
-
 }
+
+
 
 void sys_threadExit(void) 
 {
+    /*
     struct task_struct *current_task = current();
     //Liberamos stack usuario
     sys_sbrk(-PAGE_SIZE);
@@ -222,7 +308,8 @@ void sys_threadExit(void)
     list_add_tail(&(current_task->list), &freequeue);
 
     sched_next_rr();
-    return;
+    */
+    sys_exit();
 }
 
 int global_PID=1000;
