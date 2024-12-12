@@ -31,7 +31,8 @@ void put_hex(unsigned long num)
 
 void hola(int i)
 {
-    write(1,"hola",i);
+    write(1,"hola",4);
+    threadExit();
 }
 
 void delay(unsigned int milliseconds) 
@@ -371,6 +372,7 @@ for (int xa = 2; xa < 21; xa+=4)
   char *buffer = "      ";
   int a = 2;
   
+  threadCreate(hola,&g);
   /*
   if (ret == 0) 
   {
@@ -395,8 +397,9 @@ for (int xa = 2; xa < 21; xa+=4)
       //if (rbytes > 0) write(1,&b,rbytes);
     int rbytes = getKey(&b);
   */
-
-  /* SCREEN A*/
+    /*
+  //SCREEN A
+  
   SetColor(fcolor,bcolor);
   spritePut(0, 0, &goSprite);
   delay(100000);
@@ -411,7 +414,7 @@ for (int xa = 2; xa < 21; xa+=4)
   while(1)
   {
     delay(10000);
-    /* SCREEN B*/
+    //SCREEN B
     
     int i = 0;
     SetColor(3,5);
@@ -434,7 +437,7 @@ for (int xa = 2; xa < 21; xa+=4)
     if (yaf == 0 || yaf == 1) yaf = 2;
     
 
-    /* MOVEMENT */
+    // MOVEMENT
     int rbytes = getKey(&b);
     if (b == 'w' || b == 'W') 
     {
@@ -529,7 +532,7 @@ for (int xa = 2; xa < 21; xa+=4)
     }
     b = NULL;
 
-    /* BULLET */
+    // BULLET
     if (ybullet > 0)
     {
         //write(1,"hola",4);
@@ -543,7 +546,7 @@ for (int xa = 2; xa < 21; xa+=4)
         ybullet = ybullet-3;
     }
     
-    /* ALIENS */
+    // ALIENS 
     for (int i = 0; i < ALIEN_COUNT; ++i)
     {
         if (aliensArray[i] == ycannon)
@@ -577,4 +580,5 @@ for (int xa = 2; xa < 21; xa+=4)
         }
     }
   }
+    */
 }
