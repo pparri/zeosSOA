@@ -3,6 +3,5 @@ void wrappersito_func(void(*func) (void*), void *param)
 {
   func(param);
   threadExit();
-  while(1);
-  //Nos llegan dos nulls por eso da pagefault :')
+  write (1,"esto no se tiene que imprimir", 30);
 }

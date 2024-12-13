@@ -174,7 +174,7 @@ ENTRY(spritePut)
 	popl %ebp
 	ret
 
-/* int threadCreate(void (*function)(void* arg), void* parameter) */
+/* int threadCreate(void (*function)(void* arg), void* parameter, void* wrapp) */
 ENTRY(threadCreate)
 	pushl %ebp
 	movl %esp, %ebp
@@ -182,6 +182,7 @@ ENTRY(threadCreate)
 	movl $26, %eax
 	movl 0x8(%ebp), %ebx;	//func
 	movl 0xC(%ebp), %ecx;	//parameter
+	movl 0x10(%ebp), %edx;	// wrapp
 	call syscall_sysenter
 	popl %ebx
 	test %eax, %eax

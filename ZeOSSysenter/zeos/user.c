@@ -6,6 +6,24 @@ char buff[24];
 
 int pid;
 
+void wrappersito_func(void(*func) (void*), void *param);
+
+int yaf = 2;
+int speed = 2;
+int xcannon = 12;
+int ycannon = 73;
+int xbullet = 0;
+int ybullet = 0;
+int qpos = 0;
+int zpos = 0;
+int fcolor = 1;
+int bcolor = 0;
+int score = 0;
+int yscore = 9;
+int hit = 0;
+
+int aliensArray[ALIEN_COUNT][2];
+
 void put_hex(unsigned long num) 
 {
     char hex_chars[] = "0123456789ABCDEF";
@@ -28,16 +46,6 @@ void put_hex(unsigned long num)
     }
 }
 
-
-void hola(int i)
-{
-
-    write(1,"hola",4);
-    int param = (int) i;
-    write(1, "bien", i);
-    //threadExit();
-}
-
 void delay(unsigned int milliseconds) 
 {
     volatile unsigned int count = 0;
@@ -47,6 +55,15 @@ void delay(unsigned int milliseconds)
     }
 }
 
+
+void hola(void* i)
+{   
+    write(1,"hola",4);
+    int param = (int) i;
+    write(1, "bien", i);
+    //threadExit();
+    //write (1,"esto no se tiene que imprimir", 30);
+}
 
 /* SPRITES */
 
@@ -84,21 +101,6 @@ Sprite clearScreenSprite = {
     .content = clearScreenContent
 };
 */
-
-  int yaf = 2;
-  int speed = 2;
-  int xcannon = 12;
-  int ycannon = 73;
-  int xbullet = 0;
-  int ybullet = 0;
-  int qpos = 0;
-  int zpos = 0;
-  int fcolor = 1;
-  int bcolor = 5;
-  int score = 0;
-  int yscore = 10;
-
-  int aliensArray[ALIEN_COUNT];
 
 char spriteMarco[] = {
     'M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M','M',
@@ -347,7 +349,217 @@ Sprite erasebulletSprite = {
     .content = erasespriteBullet
 };
 
+void screen(int semBullet)
+{
 
+  //SCREEN A
+  SetColor(fcolor,bcolor);
+  spritePut(0, 0, &goSprite);
+  delay(100000);
+
+  SetColor(fcolor,bcolor);
+  spritePut(0, 0, &marcoSprite);
+
+  SetColor(fcolor,bcolor);
+  spritePut(xcannon, ycannon, &AcannonSprite);
+
+  for (int i = 0; i < ALIEN_COUNT; ++i) aliensArray[i][0] = 0;
+  
+  while(1)
+  {
+    //delay(10000);
+    //SCREEN B
+    int i = 0;
+    //aliensArray[2][0] = -1;
+    //aliensArray[23][0] = -1;
+    SetColor(3,0);
+    for (int xa = 2; xa < 21; xa+=4)
+    {
+        for(int ya = yaf; ya < 45; ya+=5) 
+        {
+            if (aliensArray[i][0] != -1)
+            {
+                spritePut(xa,ya,&alienSprite);
+                aliensArray[i][1] = ya;
+                aliensArray[i][0] = xa;
+            }
+            ++i;
+        }
+    }
+    if (ybullet > 0)
+    {
+        //write(1,"hola",4);
+        SetColor(fcolor,bcolor);
+        if (qpos == 1) spritePut(xbullet-3,ybullet,&erasebulletSprite);
+        else if (zpos == 1) spritePut(xbullet-3,ybullet,&erasebulletSprite);
+        else 
+        {
+            spritePut(xbullet,ybullet,&erasebulletSprite);
+            spritePut(xbullet,ybullet-3,&bulletSprite);
+        }
+        ybullet = ybullet-3;
+    }
+    delay(10000);
+    for (int xa = 2; xa < 21; xa+=4)
+    {
+        for(int ya = yaf; ya < 45; ya+=5) spritePut(xa,ya,&erasealienSprite);
+    }
+    delay(100);
+    yaf = (yaf+speed)%45;
+    if (yaf == 0 || yaf == 1) yaf = 2;
+
+    // ALIENS 
+    for (int i = 0; i < ALIEN_COUNT; ++i)
+    {
+        if ((aliensArray[i][1] == ybullet || aliensArray[i][1] == ybullet+1 || aliensArray[i][1] == ybullet-1) && 
+        (aliensArray[i][0] == xbullet|| aliensArray[i][0] == xbullet+1 || aliensArray[i][0] == xbullet-1))
+        {
+            aliensArray[i][0] = -1;
+            ++score;
+            gotoXY(22,yscore);
+            write(1,"+",1);
+            ++yscore;
+            semWait(semBullet);
+            spritePut(xbullet,ybullet,&erasebulletSprite);
+            xbullet = ybullet = 0;
+            semSignal(semBullet);
+        }
+    }
+
+    // BULLET
+    if (ybullet > 0)
+    {
+        //write(1,"hola",4);
+        if (qpos == 1) spritePut(xbullet-3,ybullet,&erasebulletSprite);
+        else if (zpos == 1) spritePut(xbullet-3,ybullet,&erasebulletSprite);
+        else 
+        {
+            SetColor(3,0);
+            spritePut(xbullet,ybullet,&erasebulletSprite);
+            spritePut(xbullet,ybullet-3,&bulletSprite);
+        }
+        ybullet = ybullet-3;
+    }
+    if (score >= ALIEN_COUNT) 
+    {
+        while(1)
+        {
+            SetColor(fcolor,bcolor);
+            spritePut(0,0,&winSprite);
+            semDestroy(semBullet);
+            threadExit();
+        }
+    }
+  }
+}
+
+void gameplay(int semBullet)
+{
+    // MOVEMENT
+    char *b;
+    char *antb = 'a';
+    while(1)
+    {
+        int rbytes = getKey(&b);
+        if (b == 'w' || b == 'W') 
+        {
+            //write(1,"hey",4);
+            SetColor(fcolor,bcolor);
+            spritePut(xcannon, ycannon, &eraseAcannonSprite);
+            --xcannon;
+            if (xcannon == 1) xcannon = 2;
+            if (antb == 'a')
+            {
+                
+            }
+            else if (antb == 'w')
+            {
+                
+            }
+            SetColor(fcolor,bcolor);
+            spritePut(xcannon, ycannon, &AcannonSprite);  
+        }
+        else if (b == 's' || b == 'S') 
+        {
+            SetColor(fcolor,bcolor);
+            spritePut(xcannon, ycannon, &eraseAcannonSprite); 
+            spritePut(xcannon, ycannon+3, &eraseScannonSprite);
+            spritePut(xcannon, ycannon+3, &eraseWcannonSprite);
+            ++xcannon;
+            if (xcannon == 23) xcannon = 22;
+            if (antb == 'a')
+            {
+                
+            }
+            else if (antb == 'w')
+            {
+                
+            } 
+            spritePut(xcannon, ycannon, &AcannonSprite);  
+        }
+        else if (b == 'd' || b == 'D')
+        {
+            SetColor(fcolor,bcolor);
+            semWait(semBullet);
+            spritePut(xbullet, ybullet, &erasebulletSprite);
+            spritePut(xcannon, ycannon-3, &bulletSprite);
+            ybullet = ycannon-3;
+            xbullet = xcannon;
+            if (qpos == 1) xbullet-=3;
+            else if (zpos == 1) xbullet+=3;
+            semSignal(semBullet);
+        }
+        /*
+        else if (b == 'z' || b == 'Z') 
+        {
+            if (antb == 'a')
+            {
+                spritePut(xcannon, ycannon, &eraseAcannonSprite);
+            }
+            else if (antb == 'q')
+            {
+                spritePut(10, 76, &eraseWcannonSprite);
+            }
+            SetColor(fcolor,bcolor);
+            spritePut(xcannon, ycannon+3, &ScannonSprite);
+            antb = 'z';     
+            zpos = 1;
+        }
+        else if (b == 'a' || b == 'A')
+        {
+            if (antb == 'z')
+            {
+                spritePut(xcannon, ycannon+3, &eraseScannonSprite);
+            }
+            else if (antb == 'q')
+            {
+                spritePut(xcannon-2, ycannon+3, &eraseWcannonSprite);
+                qpos = 0;
+            }
+            SetColor(fcolor,bcolor);
+            spritePut(xcannon, ycannon, &AcannonSprite);
+            antb = 'a';
+        }
+        else if (b == 'q' || b == 'Q')
+        {
+            if (antb == 'z')
+            {
+                spritePut(xcannon, ycannon+3, &eraseScannonSprite);
+                zpos = 0;
+            }
+            else if (antb == 'a')
+            {
+                spritePut(xcannon, ycannon, &eraseAcannonSprite);
+            }
+            SetColor(fcolor,bcolor);
+            spritePut(xcannon-2, ycannon+3, &WcannonSprite);
+            antb = 'q';
+            qpos = 1;
+        }
+        */
+        b = NULL;
+    }
+}
 
 int __attribute__ ((__section__(".text.main")))
   main(void)
@@ -359,20 +571,6 @@ int __attribute__ ((__section__(".text.main")))
 spritePut(0, 0, &clearScreenSprite);
 */
 
-/*
-SetColor(3,5);
-for (int xa = 2; xa < 21; xa+=4)
-{
-    for(int ya = 2; ya < 45; ya+=5) spritePut(xa,ya,&alienSprite);
-}
-*/
-  int g = 4;
-  char *b;
-  char *antb = 'a';
-  int x = 4;
-  int y = 11;
-
-  //threadCreate(hola,g);
 /*
   char *buffer = "      ";
   int a = 2;
@@ -401,188 +599,8 @@ for (int xa = 2; xa < 21; xa+=4)
       //if (rbytes > 0) write(1,&b,rbytes);
     int rbytes = getKey(&b);
   */
-    
-  //SCREEN A
-  
-  SetColor(fcolor,bcolor);
-  spritePut(0, 0, &goSprite);
-  delay(100000);
-
-  SetColor(fcolor,bcolor);
-  spritePut(0, 0, &marcoSprite);
-
-  SetColor(fcolor,bcolor);
-  spritePut(xcannon, ycannon, &AcannonSprite);
-
-  for (int i = 0; i < ALIEN_COUNT; ++i) aliensArray[i] = -1;
-  while(1)
-  {
-    delay(10000);
-    //SCREEN B
-    
-    int i = 0;
-    SetColor(3,5);
-    for (int xa = 2; xa < 21; xa+=4)
-    {
-        for(int ya = yaf; ya < 45; ya+=5) 
-        {
-            spritePut(xa,ya,&alienSprite);
-            aliensArray[i] = ya;
-            ++i;
-        }
-    }
-    delay(100000);
-    for (int xa = 2; xa < 21; xa+=4)
-    {
-        for(int ya = yaf; ya < 45; ya+=5) spritePut(xa,ya,&erasealienSprite);
-    }
-    delay(10000);
-    yaf = (yaf+speed)%45;
-    if (yaf == 0 || yaf == 1) yaf = 2;
-    
-
-    // MOVEMENT
-    int rbytes = getKey(&b);
-    if (b == 'w' || b == 'W') 
-    {
-        SetColor(fcolor,bcolor);
-        spritePut(xcannon, ycannon, &eraseAcannonSprite);
-        --xcannon;
-        if (xcannon == 1) xcannon = 2;
-        if (antb == 'a')
-        {
-            
-        }
-        else if (antb == 'w')
-        {
-            
-        }
-        SetColor(fcolor,bcolor);
-        spritePut(xcannon, ycannon, &AcannonSprite);  
-    }
-    else if (b == 's' || b == 'S') 
-    {
-        SetColor(fcolor,bcolor);
-        spritePut(xcannon, ycannon, &eraseAcannonSprite); 
-        spritePut(xcannon, ycannon+3, &eraseScannonSprite);
-        spritePut(xcannon, ycannon+3, &eraseWcannonSprite);
-        ++xcannon;
-        if (xcannon == 23) xcannon = 22;
-        if (antb == 'a')
-        {
-            
-        }
-        else if (antb == 'w')
-        {
-            
-        } 
-        spritePut(xcannon, ycannon, &AcannonSprite);  
-    }
-    else if (b == 'd' || b == 'D')
-    {
-        SetColor(fcolor,bcolor);
-        spritePut(xbullet, ybullet, &erasebulletSprite);
-        spritePut(xcannon, ycannon-3, &bulletSprite);
-        ybullet = ycannon-3;
-        xbullet = xcannon;
-        if (qpos == 1) xbullet-=3;
-        else if (zpos == 1) xbullet+=3;
-    }
-    else if (b == 'z' || b == 'Z') 
-    {
-        if (antb == 'a')
-        {
-            spritePut(xcannon, ycannon, &eraseAcannonSprite);
-        }
-        else if (antb == 'q')
-        {
-            spritePut(10, 76, &eraseWcannonSprite);
-        }
-        SetColor(fcolor,bcolor);
-        spritePut(xcannon, ycannon+3, &ScannonSprite);
-        antb = 'z';     
-        zpos = 1;
-    }
-    else if (b == 'a' || b == 'A')
-    {
-        if (antb == 'z')
-        {
-            spritePut(xcannon, ycannon+3, &eraseScannonSprite);
-        }
-        else if (antb == 'q')
-        {
-            spritePut(xcannon-2, ycannon+3, &eraseWcannonSprite);
-            qpos = 0;
-        }
-        SetColor(fcolor,bcolor);
-        spritePut(xcannon, ycannon, &AcannonSprite);
-        antb = 'a';
-    }
-    else if (b == 'q' || b == 'Q')
-    {
-        if (antb == 'z')
-        {
-            spritePut(xcannon, ycannon+3, &eraseScannonSprite);
-            zpos = 0;
-        }
-        else if (antb == 'a')
-        {
-            spritePut(xcannon, ycannon, &eraseAcannonSprite);
-        }
-        SetColor(fcolor,bcolor);
-        spritePut(xcannon-2, ycannon+3, &WcannonSprite);
-        antb = 'q';
-        qpos = 1;
-    }
-    b = NULL;
-
-    // BULLET
-    if (ybullet > 0)
-    {
-        //write(1,"hola",4);
-        if (qpos == 1) spritePut(xbullet-3,ybullet,&erasebulletSprite);
-        else if (zpos == 1) spritePut(xbullet-3,ybullet,&erasebulletSprite);
-        else 
-        {
-            spritePut(xbullet,ybullet,&erasebulletSprite);
-            spritePut(xbullet,ybullet-3,&bulletSprite);
-        }
-        ybullet = ybullet-3;
-    }
-    
-    // ALIENS 
-    for (int i = 0; i < ALIEN_COUNT; ++i)
-    {
-        if (aliensArray[i] == ycannon)
-        {
-            while(1)
-            {
-                int rbytes = getKey(&b);
-                SetColor(fcolor,bcolor);
-                spritePut(0,0,&loseSprite);
-                if (b == 'c') return;
-            }
-        }
-        else if (aliensArray[i] == ybullet)
-        {
-            aliensArray[i] = -1;
-            ++score;
-            gotoXY(22,yscore);
-            ++yscore;
-            write(1,'+',1);
-        }
-    }
-
-    if (score == ALIEN_COUNT) 
-    {
-        while(1)
-        {
-            int rbytes = getKey(&b);
-            SetColor(fcolor,bcolor);
-            spritePut(0,0,&winSprite);
-            if (b == 'c') return;
-        }
-    }
-  }
-    
+ int semBullet = semCreate(1);
+ threadCreate(screen,semBullet,wrappersito_func);
+ gameplay(semBullet);
+   while(1) {}
 }
