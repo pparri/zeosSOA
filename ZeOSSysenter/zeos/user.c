@@ -6,6 +6,8 @@ char buff[24];
 
 int pid;
 
+void wrappersito_func(void(*func) (void*), void *param);
+
 void put_hex(unsigned long num) 
 {
     char hex_chars[] = "0123456789ABCDEF";
@@ -34,8 +36,8 @@ void hola(void* i)
     write(1,"hola",4);
     int param = (int) i;
     write(1, "bien", i);
-    threadExit();
-    write (1,"esto no se tiene que imprimir", 30);
+    //threadExit();
+    //write (1,"esto no se tiene que imprimir", 30);
 }
 
 void delay(unsigned int milliseconds) 
@@ -372,7 +374,7 @@ for (int xa = 2; xa < 21; xa+=4)
   int x = 4;
   int y = 11;
 
-  int t = threadCreate(hola,g);
+  int t = threadCreate(hola,g, wrappersito_func);
 
 /*
   char *buffer = "      ";

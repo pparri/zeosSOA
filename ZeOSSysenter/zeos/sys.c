@@ -173,10 +173,9 @@ int ret_from_thread() {
   return 0;
 }
 
-int sys_threadCreate(void (*function)(void*), void* parameter) 
+int sys_threadCreate(void (*function)(void*), void* parameter, void* wrapp) 
 {
-    //if (!access_ok(VERIFY_READ, function, sizeof(void*), NULL)) return -EFAULT;
-    //if (!access_ok(VERIFY_READ, parameter, sizeof(void*), NULL)) return -EFAULT;
+
     if (list_empty(&freequeue)) return -ENOMEM;
 
 
@@ -212,14 +211,15 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
 
   uchild->task.ustack = (unsigned long *) (pag_heap<<12);   //direccion inicio user_stack (0x130000 -> 0x131000)
 
-  uchild->task.ustack[1022] = (unsigned long)0x777; //   --> & =  0x130ff8 
+  uchild->task.ustack[1021] = (unsigned long)0x777; //   --> & =  0x130ff8 
+  uchild->task.ustack[1022] = (unsigned long)function; //   
   uchild->task.ustack[1023] = (unsigned long)parameter; //   --> & =  0x130ffc
 
 
     // Configurar el contexto de kernel
     //unsigned long *kernel_stack = (unsigned long *)&uchild->stack[KERNEL_STACK_SIZE];
-    uchild->stack[KERNEL_STACK_SIZE-2] = (unsigned long )&uchild->task.ustack[1022]; //esp apunta a fake ebp : 0x130ff8
-    uchild->stack[KERNEL_STACK_SIZE-5] = (unsigned long)function; //eip apunta a funcion : 0x100040
+    uchild->stack[KERNEL_STACK_SIZE-2] = (unsigned long )&uchild->task.ustack[1021]; //esp apunta a fake ebp : 0x130ff8
+    uchild->stack[KERNEL_STACK_SIZE-5] = (unsigned long)wrapp; //eip apunta a funcion : 0x100040
     
     uchild->task.register_esp = &uchild->stack[KERNEL_STACK_SIZE-18];  // = ebp : 0x19fb8
     
