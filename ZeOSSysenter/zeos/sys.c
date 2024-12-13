@@ -22,12 +22,21 @@
 
 extern struct sem_t semafors[10];
 
+#define __USER_CS       0x23  /* 4 */
+#define __USER_DS       0x2B  /* 5 */
+
+
 void * get_ebp();
 
 int check_fd(int fd, int permissions)
 {
   if (fd!=1) return -EBADF; 
   if (permissions!=ESCRIPTURA) return -EACCES; 
+  return 0;
+}
+
+int ret_from_fork()
+{
   return 0;
 }
 
@@ -144,30 +153,28 @@ int sys_spritePut(int posX, int posY, Sprite* sp)
 }
 
 void sys_threadExit(void) 
-{   
-  sys_exit();
-}
-
-void ret_from_thread() 
 {
-  asm volatile (
-    "movl %ebp, %esp"
-  );
-   return;
+    
+  page_table_entry *process_PT = get_PT(current());
+    //Liberamos stack usuario
+    free_frame(get_frame(process_PT, (unsigned int)current()->heap_pointer_proc/PAGE_SIZE)); 
+    del_ss_pag(process_PT, (unsigned int)current()->heap_pointer_proc/PAGE_SIZE);
+    current()->heap_pointer_proc -= PAGE_SIZE;
+  
+  /* Free task_struct */
+  list_add_tail(&(current()->list), &freequeue);
+  
+  current()->PID=-1;
+  
+  /* Restarts execution of the next process */
+  sched_next_rr();
+    while (1) {}
 }
 
 
 int global_TID=1000;
 
-void *wrappersito_func(void (*func)(void *), void *param) 
-{
-    (*func)(param);
-    sys_threadExit();
-}
-
-
-int ret_from_fork()
-{
+int ret_from_thread() {
   return 0;
 }
 
@@ -194,42 +201,45 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
     uchild->task.state = ST_READY;
 
     //Alloc user stack in current
-    page_table_entry *process_PT = get_PT(&uchild->task);
-    int n = alloc_frame();
-    if (n == -1) return -EAGAIN;
-    else
+    //reservar pagina fisica manualmente
+
+    int pag_heap = ((unsigned long) (current()->heap_pointer_proc) / PAGE_SIZE); //304
+    if (pag_heap > TOTAL_PAGES) return -1; //no hay mas paginas logicas
+    page_table_entry *process_PT = get_PT(&uchild->task); //PT = 0x23000 ; page = 304; frame = 312
+    int new_ph_pag=alloc_frame(); //312
+    if (new_ph_pag!=-1) /* One page allocated */
     {
-      set_ss_pag(process_PT, PAG_LOG_INIT_DATA, n);
+      set_ss_pag(process_PT, pag_heap, new_ph_pag);
+      current()->heap_pointer_proc += PAGE_SIZE;
     }
-    unsigned long *ustack = (unsigned long *)(PAG_LOG_INIT_DATA*PAGE_SIZE);
+    else return -ENOMEM; //No hay paginas fisicas 
 
-  ustack--;
-  *ustack = (unsigned long)parameter;         
-  ustack--;
-  *ustack = (unsigned long)function;   
-  ustack--;
-  *ustack = 0;   
-  // Configurar el contexto de kernel
-  unsigned long *kernel_stack = (unsigned long *)&uchild->stack[KERNEL_STACK_SIZE];  
+    if (get_frame(process_PT, pag_heap) != new_ph_pag) {
+        printk("Error: Mapeo incorrecto en tabla de páginas\n");
+        return -EFAULT;
+    }
+     //Configurar el stack de usuario
+   // set_cr3(get_DIR(current()));
 
-  int register_ebp = (int) get_ebp();
-  register_ebp=(register_ebp - (int)current()) + (int)(uchild);
+    uchild->task.ustack = (unsigned long *) (pag_heap<<12);   //direccion inicio user_stack (0x130000 -> 0x131000)
 
-  kernel_stack--;
-  *(--kernel_stack) = (unsigned long)ustack;     //esp
-  kernel_stack--;
-  kernel_stack--;
-  *(--kernel_stack) = (unsigned long)&wrappersito_func;     //eip
+    uchild->task.ustack[1022] = (unsigned long)0x777; // 0x10f80  --> & =  0x130ff8
+    uchild->task.ustack[1023] = (unsigned long)parameter;  //parametro 
 
-  uchild->task.register_esp=(int)kernel_stack;
 
-  init_stats(&(uchild->task.p_stats));
+    // Configurar el contexto de kernel
+    //unsigned long *kernel_stack = (unsigned long *)&uchild->stack[KERNEL_STACK_SIZE];
+    uchild->stack[KERNEL_STACK_SIZE-2] = (unsigned long )&uchild->task.ustack[1022]; //esp apunta a fake ebp : 0x130ff8
+    uchild->stack[KERNEL_STACK_SIZE-5] = (unsigned long)function; //eip apunta a funcion
+    
+    uchild->task.register_esp = (unsigned int)&uchild->stack[KERNEL_STACK_SIZE-18];  // = ebp
+    
 
-  //RQ
-  list_add_tail(&(uchild->task.list), &readyqueue);
+    //RQ
+    list_add_tail(&(uchild->task.list), &readyqueue);
 
     printk("hey");
-    task_switch(uchild);
+    //task_switch(uchild);
     return uchild->task.TID;
 }
 

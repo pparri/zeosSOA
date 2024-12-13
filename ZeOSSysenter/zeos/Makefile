@@ -31,7 +31,7 @@ SYSOBJ = interrupt.o entry.o sys_call_table.o io.o sched.o sys.o mm.o devices.o 
 LIBZEOS = -L . -l zeos -l auxjp
 
 #add to USROBJ the object files required to complete the user program
-USROBJ = libc.o user-utils.o # libjp.a
+USROBJ = libc.o user-utils.o wrappersito_func.o # libjp.a
 
 all:zeos.bin
 
@@ -77,6 +77,8 @@ libc.o:libc.c $(INCLUDEDIR)/libc.h
 mm.o:mm.c $(INCLUDEDIR)/types.h $(INCLUDEDIR)/mm.h
 
 sys.o:sys.c $(INCLUDEDIR)/devices.h
+
+wrappersito_func.o:wrappersito_func.c $(INCLUDEDIR)/libc.h
 
 utils.o:utils.c $(INCLUDEDIR)/utils.h
 

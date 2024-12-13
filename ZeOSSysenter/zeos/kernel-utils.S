@@ -1,5 +1,6 @@
 #include <asm.h>
 
+
 /* void switch_stack(void ** save_sp, void * new_sp) NOT REALLY A FUNCTION!!! */
 ENTRY(switch_stack)
 	mov 4(%esp), %eax
@@ -39,4 +40,5 @@ ENTRY(setMSR)
 	wrmsr
 	pop %ebp
 	ret
+
 
