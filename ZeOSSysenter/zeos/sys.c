@@ -147,7 +147,7 @@ int sys_spritePut(int posX, int posY, Sprite* sp)
 
 void sys_threadExit(void) 
 {
-    
+    /*
     struct task_struct *current_task = current();
     //Liberamos stack usuario
     current_task->ustack = sys_sbrk(-PAGE_SIZE);
@@ -155,6 +155,8 @@ void sys_threadExit(void)
 
     sched_next_rr();
     while (1) {}
+    */
+   sys_exit();
 }
 int global_TID=1000;
 
@@ -162,8 +164,13 @@ void *wrappersito_func(void(*func) (void*), void *param)
 {
   (*func)(param);
   sys_threadExit();
-  while(1);
+  //while(1);
   //Nos llegan dos nulls por eso da pagefault :')
+}
+
+int ret_from_fork()
+{
+  return 0;
 }
 
 int sys_threadCreate(void (*function)(void*), void* parameter) 
@@ -197,28 +204,43 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
         return -ENOMEM;
     }
     stack_base = (unsigned long) sys_sbrk(0);   //abajo de la pila de usuario
-     //Configurar el stack de usuario
+    //Configurar el stack de usuario
     
 
 
   unsigned long *user =  stack_base; 
- user--;
-*user = (unsigned long)parameter;         
-user--;
-*user = (unsigned long)&function;   
-user--;
-*user = (unsigned long)0;   
-uchild->task.ustack = (unsigned long)user;
+  user--;
+  *user = (unsigned long)parameter;         
+  user--;
+  *user = (unsigned long)function;   
+  user--;
+  *user = (unsigned long)0;   
+  uchild->task.ustack = (unsigned long)user;
 
-    // Configurar el contexto de kernel
-    unsigned long *kernel_stack = (unsigned long *)&uchild->stack[KERNEL_STACK_SIZE];
+  // Configurar el contexto de kernel
+  unsigned long *kernel_stack = (unsigned long *)&uchild->stack[KERNEL_STACK_SIZE];  
 
-   kernel_stack--;
-   *kernel_stack = (unsigned long)&wrappersito_func;     //eip
-    kernel_stack--;
-   *kernel_stack = (unsigned long)user;     //esp
-   
-    uchild->task.register_esp = (int)kernel_stack;
+  int register_ebp = (int) get_ebp();
+  register_ebp=(register_ebp - (int)current()) + (int)(uchild);
+
+  uchild->task.register_esp=register_ebp + sizeof(DWord);
+
+  kernel_stack--;
+  *(--kernel_stack) = (unsigned long)user;     //esp
+  kernel_stack--;
+  kernel_stack--;
+  *(--kernel_stack) = (unsigned long)wrappersito_func(function,parameter);     //eip
+  
+
+  DWord temp_ebp=*(DWord*)register_ebp;
+  /* Prepare child stack for context switch */
+  
+  uchild->task.register_esp-=sizeof(DWord);
+  *(DWord*)(uchild->task.register_esp)=(DWord)ret_from_fork;
+  uchild->task.register_esp-=sizeof(DWord);
+  *(DWord*)(uchild->task.register_esp)=temp_ebp;
+  
+
 
     /* System Stack */
     /* 
@@ -238,11 +260,6 @@ uchild->task.ustack = (unsigned long)user;
 
 
 int global_PID=1000;
-
-int ret_from_fork()
-{
-  return 0;
-}
 
 int sys_fork(void)
 {

@@ -29,12 +29,11 @@ void put_hex(unsigned long num)
 }
 
 
-void hola(void* i)
+void hola(int i)
 {
 
-    write(1,"hola",4);
-    int param = (int) i;
-    write(1, "bien", i);
+    write(1,"hola",i);
+    write(1,"bien",4);
     threadExit();
 }
 
