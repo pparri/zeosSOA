@@ -143,30 +143,28 @@ int sys_spritePut(int posX, int posY, Sprite* sp)
   return spriteDraw(posY,posX,sp);
 }
 
-
-
 void sys_threadExit(void) 
-{
-    /*
-    struct task_struct *current_task = current();
-    //Liberamos stack usuario
-    current_task->ustack = sys_sbrk(-PAGE_SIZE);
-    list_add_tail(&(current_task->list), &freequeue);
-
-    sched_next_rr();
-    while (1) {}
-    */
-   sys_exit();
+{   
+  sys_exit();
 }
+
+void ret_from_thread() 
+{
+  asm volatile (
+    "movl %ebp, %esp"
+  );
+   return;
+}
+
+
 int global_TID=1000;
 
-void *wrappersito_func(void(*func) (void*), void *param)
+void *wrappersito_func(void (*func)(void *), void *param) 
 {
-  (*func)(param);
-  sys_threadExit();
-  //while(1);
-  //Nos llegan dos nulls por eso da pagefault :')
+    (*func)(param);
+    sys_threadExit();
 }
+
 
 int ret_from_fork()
 {
@@ -175,7 +173,7 @@ int ret_from_fork()
 
 int sys_threadCreate(void (*function)(void*), void* parameter) 
 {
-    //if (!access_ok(VERIFY_READ, function, sizeof(void*), NULL)) return -EFAULT;
+    //if (!access_ok(VERIFY_READ, &function, sizeof(void*), NULL)) return -EFAULT;
     //if (!access_ok(VERIFY_READ, parameter, sizeof(void*), NULL)) return -EFAULT;
     if (list_empty(&freequeue)) return -ENOMEM;
 
@@ -196,64 +194,41 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
     uchild->task.state = ST_READY;
 
     //Alloc user stack in current
-    unsigned long *stack_base = (unsigned long)sys_sbrk(4096);
-    if (stack_base == (unsigned long)NULL) {
-      //si nos devuelve error, lo devolvemos a la freequeue
-        sys_sbrk(-4096); 
-        list_add_tail(lhcurrent, &freequeue);
-        return -ENOMEM;
+    page_table_entry *process_PT = get_PT(&uchild->task);
+    int n = alloc_frame();
+    if (n == -1) return -EAGAIN;
+    else
+    {
+      set_ss_pag(process_PT, PAG_LOG_INIT_DATA, n);
     }
-    stack_base = (unsigned long) sys_sbrk(0);   //abajo de la pila de usuario
-    //Configurar el stack de usuario
-    
+    unsigned long *ustack = (unsigned long *)(PAG_LOG_INIT_DATA*PAGE_SIZE);
 
-
-  unsigned long *user =  stack_base; 
-  user--;
-  *user = (unsigned long)parameter;         
-  user--;
-  *user = (unsigned long)function;   
-  user--;
-  *user = (unsigned long)0;   
-  uchild->task.ustack = (unsigned long)user;
-
+  ustack--;
+  *ustack = (unsigned long)parameter;         
+  ustack--;
+  *ustack = (unsigned long)function;   
+  ustack--;
+  *ustack = 0;   
   // Configurar el contexto de kernel
   unsigned long *kernel_stack = (unsigned long *)&uchild->stack[KERNEL_STACK_SIZE];  
 
   int register_ebp = (int) get_ebp();
   register_ebp=(register_ebp - (int)current()) + (int)(uchild);
 
-  uchild->task.register_esp=register_ebp + sizeof(DWord);
-
   kernel_stack--;
-  *(--kernel_stack) = (unsigned long)user;     //esp
+  *(--kernel_stack) = (unsigned long)ustack;     //esp
   kernel_stack--;
   kernel_stack--;
-  *(--kernel_stack) = (unsigned long)wrappersito_func(function,parameter);     //eip
-  
+  *(--kernel_stack) = (unsigned long)&wrappersito_func;     //eip
 
-  DWord temp_ebp=*(DWord*)register_ebp;
-  /* Prepare child stack for context switch */
-  
-  uchild->task.register_esp-=sizeof(DWord);
-  *(DWord*)(uchild->task.register_esp)=(DWord)ret_from_fork;
-  uchild->task.register_esp-=sizeof(DWord);
-  *(DWord*)(uchild->task.register_esp)=temp_ebp;
-  
+  uchild->task.register_esp=(int)kernel_stack;
 
+  init_stats(&(uchild->task.p_stats));
 
-    /* System Stack */
-    /* 
-      user (esp) --> apunta al top de la pila de usuario
-      function (eip)
-    */
+  //RQ
+  list_add_tail(&(uchild->task.list), &readyqueue);
 
-    init_stats(&(uchild->task.p_stats));
-
-    //RQ
-    list_add_tail(&(uchild->task.list), &readyqueue);
-
-    //printk("hey");
+    printk("hey");
     task_switch(uchild);
     return uchild->task.TID;
 }

@@ -34,7 +34,7 @@ void hola(int i)
 
     write(1,"hola",i);
     write(1,"bien",4);
-    threadExit();
+    //threadExit();
 }
 
 void delay(unsigned int milliseconds) 
