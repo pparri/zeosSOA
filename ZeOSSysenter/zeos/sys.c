@@ -22,6 +22,10 @@
 
 extern struct sem_t semafors[10];
 
+#define __USER_CS       0x23  /* 4 */
+#define __USER_DS       0x2B  /* 5 */
+
+
 void * get_ebp();
 
 int check_fd(int fd, int permissions)
@@ -148,22 +152,27 @@ int sys_spritePut(int posX, int posY, Sprite* sp)
 void sys_threadExit(void) 
 {
     
-    struct task_struct *current_task = current();
+  page_table_entry *process_PT = get_PT(current());
     //Liberamos stack usuario
-    current_task->ustack = sys_sbrk(-PAGE_SIZE);
-    list_add_tail(&(current_task->list), &freequeue);
-
-    sched_next_rr();
+    free_frame(get_frame(process_PT, (unsigned int)current()->heap_pointer_proc/PAGE_SIZE)); 
+    del_ss_pag(process_PT, (unsigned int)current()->heap_pointer_proc/PAGE_SIZE);
+    current()->heap_pointer_proc -= PAGE_SIZE;
+  
+  /* Free task_struct */
+  list_add_tail(&(current()->list), &freequeue);
+  
+  current()->PID=-1;
+  
+  /* Restarts execution of the next process */
+  sched_next_rr();
     while (1) {}
 }
+
+
 int global_TID=1000;
 
-void *wrappersito_func(void(*func) (void*), void *param)
-{
-  (*func)(param);
-  sys_threadExit();
-  while(1);
-  //Nos llegan dos nulls por eso da pagefault :')
+int ret_from_thread() {
+  return 0;
 }
 
 int sys_threadCreate(void (*function)(void*), void* parameter) 
@@ -189,42 +198,33 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
     uchild->task.state = ST_READY;
 
     //Alloc user stack in current
-    unsigned long *stack_base = (unsigned long)sys_sbrk(4096);
-    if (stack_base == (unsigned long)NULL) {
-      //si nos devuelve error, lo devolvemos a la freequeue
-        sys_sbrk(-4096); 
-        list_add_tail(lhcurrent, &freequeue);
-        return -ENOMEM;
+    //reservar pagina fisica manualmente
+
+    int pag_heap = ((unsigned long) (current()->heap_pointer_proc) / PAGE_SIZE); //304
+    if (pag_heap > TOTAL_PAGES) return -1; //no hay mas paginas logicas
+    page_table_entry *process_PT = get_PT(&uchild->task); //PT = 0x23000 ; page = 304; frame = 312
+    int new_ph_pag=alloc_frame(); //312
+    if (new_ph_pag!=-1) /* One page allocated */
+    {
+      set_ss_pag(process_PT, pag_heap, new_ph_pag);
+      current()->heap_pointer_proc += PAGE_SIZE;
     }
-    stack_base = (unsigned long) sys_sbrk(0);   //abajo de la pila de usuario
+    else return -1; //No hay paginas fisicas 
      //Configurar el stack de usuario
-    
 
+  uchild->task.ustack = (unsigned long *) (pag_heap<<12);   //direccion inicio user_stack (0x130000 -> 0x131000)
 
-  unsigned long *user =  stack_base; 
- user--;
-*user = (unsigned long)parameter;         
-user--;
-*user = (unsigned long)&function;   
-user--;
-*user = (unsigned long)0;   
-uchild->task.ustack = (unsigned long)user;
+  uchild->task.ustack[1022] = (unsigned long)0x777; // 0x10f80  --> & =  0x130ff8
+  uchild->task.ustack[1023] = (unsigned long)parameter;  //parametro 
+
 
     // Configurar el contexto de kernel
-    unsigned long *kernel_stack = (unsigned long *)&uchild->stack[KERNEL_STACK_SIZE];
-
-   kernel_stack--;
-   *kernel_stack = (unsigned long)&wrappersito_func;     //eip
-    kernel_stack--;
-   *kernel_stack = (unsigned long)user;     //esp
-   
-    uchild->task.register_esp = (int)kernel_stack;
-
-    /* System Stack */
-    /* 
-      user (esp) --> apunta al top de la pila de usuario
-      function (eip)
-    */
+    //unsigned long *kernel_stack = (unsigned long *)&uchild->stack[KERNEL_STACK_SIZE];
+    uchild->stack[KERNEL_STACK_SIZE-2] = (unsigned long )&uchild->task.ustack[1022]; //esp apunta a fake ebp : 0x130ff8
+    uchild->stack[KERNEL_STACK_SIZE-5] = (unsigned long)function; //eip apunta a funcion
+    
+    uchild->task.register_esp = &uchild->stack[KERNEL_STACK_SIZE-18];  // = ebp
+    
 
     init_stats(&(uchild->task.p_stats));
 

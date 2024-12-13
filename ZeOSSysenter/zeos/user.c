@@ -35,7 +35,7 @@ void hola(void* i)
     write(1,"hola",4);
     int param = (int) i;
     write(1, "bien", i);
-    threadExit();
+    //threadExit();
 }
 
 void delay(unsigned int milliseconds) 
