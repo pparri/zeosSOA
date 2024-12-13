@@ -160,9 +160,7 @@ void sys_threadExit(void)
   
   /* Free task_struct */
   list_add_tail(&(current()->list), &freequeue);
-  
-  current()->PID=-1;
-  
+    
   /* Restarts execution of the next process */
   sched_next_rr();
     while (1) {}
@@ -214,16 +212,16 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
 
   uchild->task.ustack = (unsigned long *) (pag_heap<<12);   //direccion inicio user_stack (0x130000 -> 0x131000)
 
-  uchild->task.ustack[1022] = (unsigned long)0x777; // 0x10f80  --> & =  0x130ff8
-  uchild->task.ustack[1023] = (unsigned long)parameter;  //parametro 
+  uchild->task.ustack[1022] = (unsigned long)0x777; //   --> & =  0x130ff8 
+  uchild->task.ustack[1023] = (unsigned long)parameter; //   --> & =  0x130ffc
 
 
     // Configurar el contexto de kernel
     //unsigned long *kernel_stack = (unsigned long *)&uchild->stack[KERNEL_STACK_SIZE];
     uchild->stack[KERNEL_STACK_SIZE-2] = (unsigned long )&uchild->task.ustack[1022]; //esp apunta a fake ebp : 0x130ff8
-    uchild->stack[KERNEL_STACK_SIZE-5] = (unsigned long)function; //eip apunta a funcion
+    uchild->stack[KERNEL_STACK_SIZE-5] = (unsigned long)function; //eip apunta a funcion : 0x100040
     
-    uchild->task.register_esp = &uchild->stack[KERNEL_STACK_SIZE-18];  // = ebp
+    uchild->task.register_esp = &uchild->stack[KERNEL_STACK_SIZE-18];  // = ebp : 0x19fb8
     
 
     init_stats(&(uchild->task.p_stats));
@@ -232,7 +230,7 @@ int sys_threadCreate(void (*function)(void*), void* parameter)
     list_add_tail(&(uchild->task.list), &readyqueue);
 
     //printk("hey");
-    task_switch(uchild);
+    //task_switch(uchild);
     return uchild->task.TID;
 }
 

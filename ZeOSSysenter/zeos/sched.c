@@ -216,6 +216,8 @@ void init_task1(void)
   tss.esp0=(DWord)&(uc->stack[KERNEL_STACK_SIZE]);
   setMSR(0x175, 0, (unsigned long)&(uc->stack[KERNEL_STACK_SIZE]));
 
+
+
   set_cr3(c->dir_pages_baseAddr);
 }
 

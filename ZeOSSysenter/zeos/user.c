@@ -30,12 +30,12 @@ void put_hex(unsigned long num)
 
 
 void hola(void* i)
-{
-
+{   
     write(1,"hola",4);
     int param = (int) i;
     write(1, "bien", i);
-    //threadExit();
+    threadExit();
+    write (1,"esto no se tiene que imprimir", 30);
 }
 
 void delay(unsigned int milliseconds) 
@@ -372,7 +372,8 @@ for (int xa = 2; xa < 21; xa+=4)
   int x = 4;
   int y = 11;
 
-  threadCreate(hola,g);
+  int t = threadCreate(hola,g);
+
 /*
   char *buffer = "      ";
   int a = 2;
@@ -585,4 +586,5 @@ for (int xa = 2; xa < 21; xa+=4)
     }
   }
     */
+   while(1) {}
 }
