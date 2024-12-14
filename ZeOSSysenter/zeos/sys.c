@@ -456,8 +456,8 @@ int sys_semCreate(int value) {
     //printk("creado");
     return i;
   }
-  return -1;
  }
+  return -1; //no hay mas semaforos disponibles en el proceso
 }
 
 int sys_semWait(int semID) {
@@ -465,32 +465,45 @@ int sys_semWait(int semID) {
   if (semafors[semID].semid != semID) return -1;
   semafors[semID].count--;
   if (semafors[semID].count < 0) {
-    //printk("bloqueamos\n");
+    printk("bloqueamos\n");
+    current()->state = ST_BLOCKED;
     list_add(&current()->list,&semafors[semID].blocked);
     sched_next_rr();
   }
-  return 1;
+  return 0;
 }
 
 int sys_semSignal(int semID) {
- if (semID > 10 || semID < 0) return -1;
-  //printk("desbloqueamos\n");
+  if (semID > 10 || semID < 0) return -1;
   if (semafors[semID].semid != semID) return -1;
   semafors[semID].count++;
-  if (semafors[semID].count <= 0) {
+  if (semafors[semID].count <= 0) { //hay almenos un thread bloqueado
     struct list_head *l = list_first(&semafors[semID].blocked);
     list_del(l);
+    struct task_struct *unblocked_task = list_head_to_task_struct(l);
+    unblocked_task->state = ST_READY;
     list_add(l,&readyqueue);
   }
-  return 1;
+  return 0;
 }
 
 int sys_semDestroy(int semID) {
-  if (current()->PID != semafors[semID].TID) return -1;
-  else {
+  if (semID > 10 || semID < 0) return -1;
+  if (semafors[semID].semid != semID) return -1;
+  if (current()->TID != semafors[semID].TID) return -1; //solo el thread que lo ha creado puede destruirlo
+  
+  //desbloquear y nofiticar a los threads bloqueados del semaforo
+  while (!list_empty(&semafors[semID].blocked)) {
+      struct list_head *l = list_first(&semafors[semID].blocked);
+      list_del(l);
+      struct task_struct *blocked_thread = list_head_to_task_struct(l);
+      blocked_thread->state = ST_READY;
+      list_add_tail(&(blocked_thread->list), &readyqueue);
+      printk("Desbloqueamos\n");
+  }
+
     semafors[semID].count = NULL;
     semafors[semID].semid = -1;
     semafors[semID].TID = -1;
-    return 1;
-  }
+    return 0;
 }

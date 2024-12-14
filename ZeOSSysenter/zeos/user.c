@@ -48,6 +48,34 @@ void delay(unsigned int milliseconds)
         count++;
     }
 }
+/*------------ Prueba semaforos---------------- */
+#define NUM_THREADS 5
+
+int contador = 0; // Variable global compartida
+
+void thread_function(void* arg) {
+    int semid = (int)arg;
+    write(1, "Hilo creado\n", 12);
+
+    // Esperar en el semáforo (P)
+    semWait(semid);
+    write(1, "Hilo despierto\n", 15);
+
+    // Sección crítica (en vdd no hace falta xq no se pueden imprimir los ints xd)
+    int valor_actual = contador;
+    valor_actual++;
+    contador = valor_actual;
+    delay(110000); //el hijo ha heredado la rapidez del padre -_-
+    //hacemos que tarde mucho para que los otros threads no puedan entrar hasta q el semaforo se destruya
+
+    // Salir de la sección crítica
+    semSignal(semid); //
+    write(1, "Hilo terminado\n", 15);
+    // Terminar el hilo
+    threadExit();
+    //Para el noveno milestone comentar este y descomentar el de wrappersito!
+}
+/*-------------------------------------------- */
 
 
 /* SPRITES */
@@ -368,43 +396,9 @@ for (int xa = 2; xa < 21; xa+=4)
     for(int ya = 2; ya < 45; ya+=5) spritePut(xa,ya,&alienSprite);
 }
 */
-  int g = 4;
-  char *b;
-  char *antb = 'a';
-  int x = 4;
-  int y = 11;
-
-  int t = threadCreate(hola,g, wrappersito_func);
 
 /*
-  char *buffer = "      ";
-  int a = 2;
-  
-  /*
-  if (ret == 0) 
-  {
-    //hijo
-    semWait(0);
-    ++a;
-    itoa(a,buffer);
-    write(1,buffer,6);
-    semSignal(0);
 
-  }
-  else
-  {
-    //padre
-    semWait(0);delay(10000);
-    ++a;
-    itoa(a,buffer);
-    write(1,buffer,6);
-    semSignal(0);
-  }
-  semDestroy(0);
-      //if (rbytes > 0) write(1,&b,rbytes);
-    int rbytes = getKey(&b);
-  */
-    /*
   //SCREEN A
   
   SetColor(fcolor,bcolor);
@@ -588,5 +582,38 @@ for (int xa = 2; xa < 21; xa+=4)
     }
   }
     */
+
+   /* PRUEBA SEMAFOROS*/
+        // Crear el semáforo con valor inicial 0 = hacemos que todos los threads se desbloqueen para comprobar estado bloqueado y desbloqueado
+        //Crear el semaforo con valor inicial 1 = el primer thread acabara y los otros se bloquean
+    int semid = semCreate(1);
+    if (semid == -1) {
+        write(1, "Error creando semáforo\n", 23);
+        return -1;
+    }
+    else {
+        write(1,"Semaforo creado\n", 16);
+    }
+
+    int i;
+    int tids[NUM_THREADS];
+
+    // Crear los hilos
+    for (i = 0; i < NUM_THREADS; i++) {
+        int ret = threadCreate(thread_function, semid, wrappersito_func);
+        if (ret == -1) {
+            write(1, "Error creando hilo\n", 19);
+            return -1;
+        }
+        tids[i] = ret;
+    }
+
+
+    // Destruir el semáforo
+    delay(100000); //el padre es rayo mcqueen y llega antes que los hijos
+    int d = semDestroy(semid);
+    if (d == 0) write (1, "semaforo destruido\n", 19);
+    else write (1, "no funciona", 11);
+
    while(1) {}
 }
