@@ -176,6 +176,20 @@ int ret_from_thread() {
 int sys_threadCreate(void (*function)(void*), void* parameter, void* wrapp) 
 {
 
+  if (!access_ok(VERIFY_READ, function, sizeof(void (*)(void*)), current())) {
+    return -EFAULT;
+}
+
+if (parameter != NULL) {
+    if (!access_ok(VERIFY_READ, parameter, sizeof(void*), current())) {
+        return -EFAULT; 
+    }
+}
+
+if (!access_ok(VERIFY_READ, wrapp, sizeof(void (*)(void*)), current())) {
+    return -EFAULT;
+}
+
     if (list_empty(&freequeue)) return -ENOMEM;
 
 
