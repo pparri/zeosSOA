@@ -20,7 +20,6 @@
 #define LECTURA 0
 #define ESCRIPTURA 1
 
-extern struct sem_t semafors[10];
 
 #define __USER_CS       0x23  /* 4 */
 #define __USER_DS       0x2B  /* 5 */
@@ -207,6 +206,7 @@ if (!access_ok(VERIFY_READ, wrapp, sizeof(void (*)(void*)), current())) {
     uchild->task.TID = ++global_TID;
     uchild->task.PID = current()->PID;
     uchild->task.state = ST_READY;
+    uchild->task.semafors = current()->semafors;  //los threads apuntan al mismo array de semafors (lo comparten)
 
     //Alloc user stack in current
     //reservar pagina fisica manualmente
@@ -220,7 +220,22 @@ if (!access_ok(VERIFY_READ, wrapp, sizeof(void (*)(void*)), current())) {
       set_ss_pag(process_PT, pag_heap, new_ph_pag);
       current()->heap_pointer_proc += PAGE_SIZE;
     }
-    else return -1; //No hay paginas fisicas 
+    else {//No hay paginas fisicas 
+        //Desalojamos a partir del heap
+
+     while(current()->heap_pointer_proc < current()->heap_start_proc) {
+      free_frame(get_frame(process_PT, (unsigned int)current()->heap_pointer_proc/PAGE_SIZE)); 
+      del_ss_pag(process_PT, (unsigned int)current()->heap_pointer_proc/PAGE_SIZE);
+      current()->heap_pointer_proc -= PAGE_SIZE;
+  }
+      /* Deallocate task_struct */
+      list_add_tail(lhcurrent, &freequeue);
+      
+      /* Return error */
+      return -EAGAIN; 
+    
+
+    }; 
      //Configurar el stack de usuario
 
   uchild->task.ustack = (unsigned long *) (pag_heap<<12);   //direccion inicio user_stack (0x130000 -> 0x131000)
@@ -272,6 +287,18 @@ int sys_fork(void)
   
   /* Copy the parent's task struct to child's */
   copy_data(current(), uchild, sizeof(union task_union));
+
+ // Obtener el task_struct del hijo
+  struct task_struct *child_task = &(uchild->task);
+  
+  // Re-inicializar semaforos ya que tenemos copia extacta
+  for (int i = 0; i < NUM_SEM; i++) {
+    child_task->semafors[i].semid = -1;  
+    child_task->semafors[i].count = 0;
+    child_task->semafors[i].PID = -1;  // No es necesario guardarse el PID creador
+    INIT_LIST_HEAD(&child_task->semafors[i].blocked);
+  }
+
   
   /* new pages dir */
   allocate_DIR((struct task_struct*)uchild);
@@ -462,11 +489,11 @@ int sys_get_stats(int pid, struct stats *st)
 
 int sys_semCreate(int value) {
  for (int i = 0; i < 10; ++i) {
-  if (semafors[i].semid == -1) {
-    semafors[i].semid = i;  //semaforos van de 0 a 9
-    semafors[i].count = value;
-    semafors[i].TID = current()->PID; //tid del thread que lo ha creado
-    INIT_LIST_HEAD(&semafors[i].blocked);
+  if (current()->semafors[i].semid == -1) {
+    current()->semafors[i].semid = i;  //semaforos van de 0 a 9
+    current()->semafors[i].count = value;
+    current()->semafors[i].PID = current()->PID; //guardamos el pid del proceso que lo ha creado
+    INIT_LIST_HEAD(&current()->semafors[i].blocked);
     //printk("creado");
     return i;
   }
@@ -475,13 +502,14 @@ int sys_semCreate(int value) {
 }
 
 int sys_semWait(int semID) {
-  if (semID > 10 || semID < 0) return -1;
-  if (semafors[semID].semid != semID) return -1;
-  semafors[semID].count--;
-  if (semafors[semID].count < 0) {
+  if (semID > 10 || semID < 0) return -1; //un proceso no puede tener mas de 10 semaforos
+  if (current()->semafors[semID].PID != current()->PID) return -1; //solo el proceso que lo ha creado puede usarlo
+  if (current()->semafors[semID].semid != semID) return -1;
+  current()->semafors[semID].count--;
+  if (current()->semafors[semID].count < 0) {
     printk("bloqueamos\n");
     current()->state = ST_BLOCKED;
-    list_add(&current()->list,&semafors[semID].blocked);
+    list_add(&current()->list,&current()->semafors[semID].blocked);
     sched_next_rr();
   }
   return 0;
@@ -489,10 +517,11 @@ int sys_semWait(int semID) {
 
 int sys_semSignal(int semID) {
   if (semID > 10 || semID < 0) return -1;
-  if (semafors[semID].semid != semID) return -1;
-  semafors[semID].count++;
-  if (semafors[semID].count <= 0) { //hay almenos un thread bloqueado
-    struct list_head *l = list_first(&semafors[semID].blocked);
+  if (current()->semafors[semID].PID != current()->PID) return -1; //solo el proceso que lo ha creado puede usarlo
+  if (current()->semafors[semID].semid != semID) return -1;
+  current()->semafors[semID].count++;
+  if (current()->semafors[semID].count <= 0) { //hay almenos un thread bloqueado
+    struct list_head *l = list_first(&current()->semafors[semID].blocked);
     list_del(l);
     struct task_struct *unblocked_task = list_head_to_task_struct(l);
     unblocked_task->state = ST_READY;
@@ -503,12 +532,12 @@ int sys_semSignal(int semID) {
 
 int sys_semDestroy(int semID) {
   if (semID > 10 || semID < 0) return -1;
-  if (semafors[semID].semid != semID) return -1;
-  if (current()->TID != semafors[semID].TID) return -1; //solo el thread que lo ha creado puede destruirlo
+  if (current()->semafors[semID].PID != current()->PID) return -1; //solo el proceso que lo ha creado puede usarlo
+  if (current()->semafors[semID].semid != semID) return -1;
   
   //desbloquear y nofiticar a los threads bloqueados del semaforo
-  while (!list_empty(&semafors[semID].blocked)) {
-      struct list_head *l = list_first(&semafors[semID].blocked);
+  while (!list_empty(&current()->semafors[semID].blocked)) {
+      struct list_head *l = list_first(&current()->semafors[semID].blocked);
       list_del(l);
       struct task_struct *blocked_thread = list_head_to_task_struct(l);
       blocked_thread->state = ST_READY;
@@ -516,8 +545,8 @@ int sys_semDestroy(int semID) {
       printk("Desbloqueamos\n");
   }
 
-    semafors[semID].count = NULL;
-    semafors[semID].semid = -1;
-    semafors[semID].TID = -1;
+    current()->semafors[semID].count = NULL;
+    current()->semafors[semID].semid = -1;
+    current()->semafors[semID].PID = -1;
     return 0;
 }

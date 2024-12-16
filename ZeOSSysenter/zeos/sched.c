@@ -34,8 +34,8 @@ struct list_head freequeue;
 // Ready queue
 struct list_head readyqueue;
 
-
-struct sem_t semafors[10]; //vector de semafors
+#define NUM_SEM 10 //sem por procesos
+struct sem_t semafor_proces[NUM_SEM];
 
 
 void init_stats(struct stats *s)
@@ -219,6 +219,15 @@ void init_task1(void)
 
 
   set_cr3(c->dir_pages_baseAddr);
+  c->semafors = semafor_proces;
+
+    // Inicializar los semáforos --> lo heredaran los procesos hijos --> hacer que sus threads apunten al mismo array
+  for (int i = 0; i < NUM_SEM; i++) {
+    c->semafors[i].semid = -1;  
+    c->semafors[i].count = NULL;
+    c->semafors[i].PID = -1;
+    INIT_LIST_HEAD(&c->semafors[i].blocked);
+  }
 }
 
 void init_freequeue()
@@ -239,11 +248,6 @@ void init_sched()
 {
   init_freequeue();
   INIT_LIST_HEAD(&readyqueue);
-  for (int i = 0; i < 10; ++i) {
-    semafors[i].count = NULL;
-    semafors[i].semid = -1;
-    semafors[i].TID = -1;
-  }
 }
 
 struct task_struct* current()

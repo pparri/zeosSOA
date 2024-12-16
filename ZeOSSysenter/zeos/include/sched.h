@@ -17,6 +17,13 @@
 
 enum state_t { ST_RUN, ST_READY, ST_BLOCKED };
 
+struct sem_t {
+  int semid;
+  int count;
+  struct list_head blocked;
+  int PID; //id del PID que lo ha creado
+};
+
 struct task_struct {
   int PID;			/* Process ID. This MUST be the first field of the struct. */
   int TID;
@@ -30,18 +37,13 @@ struct task_struct {
   char* heap_end_proc;
   char *heap_pointer_proc;
   unsigned long  *ustack; /* user stack */
+  struct sem_t *semafors; //semaforo creado por el proceso y compartido por los threads
+  
 };
 
 union task_union {
   struct task_struct task;
   unsigned long stack[KERNEL_STACK_SIZE];    /* pila de sistema, per procés */
-};
-
-struct sem_t {
-  int semid;
-  int count;
-  struct list_head blocked;
-  int TID; //id del thread que lo ha creado
 };
 
 extern union task_union protected_tasks[NR_TASKS+2];

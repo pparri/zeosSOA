@@ -30,7 +30,7 @@
 #define DATA_END (DATA_START+(NUM_PAG_DATA*PAGE_SIZE))
 #define INIT_HEAP (DATA_END + NUM_PAG_DATA*PAGE_SIZE)
 
-#define WRAPPERSITO_FUNC 0x100510
+#define NUM_SEM 10 //Numero semaforos por proceso
 
 #endif
 
